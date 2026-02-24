@@ -44,17 +44,32 @@ Hệ thống được tổ chức để cung cấp đầy đủ Vai trò, Quy tr
 
 Xem chi tiết tại: **[.ai/agents/README.md](./agents/README.md)**
 
-1. **[System Architect](./agents/system-architect.md)**: Kiến trúc sư trưởng, quản lý ADR và cấu trúc hệ thống.
-2. **[API Designer](./agents/api-designer.md)**: Chuyên gia thiết kế Endpoint và tài liệu API.
-3. **[Database Expert](./agents/database-expert.md)**: Chuyên gia thiết kế Schema, tối ưu Query và migration.
-4. **[UI Analyst](./agents/ui-analyst.md)**: Chuyên gia phân tích giao diện và trải nghiệm.
-5. **[Frontend Developer](./agents/frontend-dev.md)**: Chuyên gia triển khai React (Next.js), Vue (Nuxt.js).
-6. **[Backend Developer](./agents/backend-dev.md)**: Chuyên gia triển khai Node.js & NestJS Expert (Next.js là phụ trợ).
-7. **[Security & Privacy Expert](./agents/security-expert.md)**: Chuyên gia rà soát bảo mật và an toàn dữ liệu.
-8. **[Performance & Scaling Expert](./agents/performance-expert.md)**: Chuyên gia tối ưu hóa hiệu năng và mở rộng hệ thống.
-9. **[Reviewer & Refactor](./agents/reviewer.md)**: Chuyên gia kiểm soát chất lượng code và tái cấu trúc.
-10. **[Tester](./agents/tester.md)**: Chuyên gia kiểm thử tự động và bảo mật.
-11. **[DevOps & SRE](./agents/devops-sre.md)**: Chuyên gia về hạ tầng, CI/CD và giám sát hệ thống.
+Hệ thống bao gồm 19 Agent chuyên gia phối hợp chặt chẽ:
+
+### Core & Web
+1. **[System Architect](./agents/system-architect.md)**: Kiến trúc sư trưởng.
+2. **[API Designer](./agents/api-designer.md)**: Thiết kế REST/GraphQL API.
+3. **[Database Expert](./agents/database-expert.md)**: Chuyên gia DB & Prisma Expert.
+4. **[UI Analyst](./agents/ui-analyst.md)**: Phân tích giao diện & Figma Expert.
+5. **[Frontend Developer](./agents/frontend-dev.md)**: React (Next.js), Vue (Nuxt.js).
+6. **[Backend Node Developer](./agents/backend-node-dev.md)**: Node.js & NestJS Expert.
+7. **[Backend Python Developer](./agents/backend-python-dev.md)**: FastAPI, Django Expert.
+8. **[Backend Go Developer](./agents/backend-go-dev.md)**: Golang Microservices Expert.
+
+### Mobile
+9. **[Mobile RN Developer](./agents/mobile-rn-dev.md)**: React Native (Cross-platform).
+10. **[Mobile Flutter Developer](./agents/mobile-flutter-dev.md)**: Flutter (Cross-platform).
+11. **[Mobile Swift Developer](./agents/mobile-swift-dev.md)**: Native iOS (Swift).
+12. **[Mobile Kotlin Developer](./agents/mobile-kotlin-dev.md)**: Native Android (Kotlin).
+13. **[Mobile Java Developer](./agents/mobile-java-dev.md)**: Native Android/Legacy (Java).
+14. **[Mobile Obj-C Developer](./agents/mobile-objc-dev.md)**: Native iOS/Legacy (Objective-C).
+
+### Quality & Ops
+15. **[Security Expert](./agents/security-expert.md)**: Rà soát bảo mật.
+16. **[Performance Expert](./agents/performance-expert.md)**: Tối ưu hiệu năng.
+17. **[Reviewer & Refactor](./agents/reviewer.md)**: Kiểm soát chất lượng code.
+18. **[Tester](./agents/tester.md)**: Kiểm thử tự động.
+19. **[DevOps & SRE](./agents/devops-sre.md)**: Hạ tầng, CI/CD, Docker.
 
 ## Hướng dẫn đồng bộ (Sync)
 Nếu bạn đang sử dụng **Antigravity IDE**, bạn cần đồng bộ thư mục `.ai` vào thư mục `.agent` để IDE có thể nhận diện các Agent và Workflow.

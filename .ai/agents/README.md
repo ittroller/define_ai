@@ -6,51 +6,32 @@ Thư mục này chứa các định nghĩa vai trò (Roles) cho hệ thống AI 
 
 ## 🏗️ Chi tiết các Agent
 
-Hệ thống bao gồm 11 Agent phối hợp chặt chẽ:
+Hệ thống bao gồm 19 Agent phối hợp chặt chẽ, được chia thành các nhóm chuyên môn:
 
-### 1. 🏛️ System Architect ([system-architect.md](./system-architect.md))
-*   **Vai trò**: Kiến trúc sư trưởng.
-*   **Nhiệm vụ**: Quản lý quyết định kiến trúc (ADR), cấu trúc thư mục, tiêu chuẩn kỹ thuật và lộ trình phát triển.
+### 🌐 Core & Web Development
+1.  **🏛️ System Architect ([system-architect.md](./system-architect.md))**: Kiến trúc sư trưởng, quản lý ADR và cấu trúc hệ thống.
+2.  **🛣️ API Designer ([api-designer.md](./api-designer.md))**: Chuyên gia thiết kế REST/GraphQL API.
+3.  **🗄️ Database Expert ([database-expert.md](./database-expert.md))**: Chuyên gia DB & Prisma Expert.
+4.  **🎨 UI Analyst ([ui-analyst.md](./ui-analyst.md))**: Chuyên gia phân tích giao diện & Figma Expert.
+5.  **💻 Frontend Developer ([frontend-dev.md](./frontend-dev.md))**: Chuyên gia React (Next.js), Vue (Nuxt.js).
+6.  **⚙️ Backend Node Developer ([backend-node-dev.md](./backend-node-dev.md))**: Chuyên gia Node.js & NestJS.
+7.  **🐍 Backend Python Developer ([backend-python-dev.md](./backend-python-dev.md))**: Chuyên gia FastAPI, Django.
+8.  **🐹 Backend Go Developer ([backend-go-dev.md](./backend-go-dev.md))**: Chuyên gia Golang Microservices.
 
-### 2. 🛣️ API Designer ([api-designer.md](./api-designer.md))
-*   **Vai trò**: Chuyên gia thiết kế API.
-*   **Nhiệm vụ**: Định nghĩa Endpoint, DTO, Request/Response, tài liệu API (OpenAPI/Swagger) và cơ chế Auth.
+### 📱 Mobile Development
+9.  **⚛️ Mobile RN Developer ([mobile-rn-dev.md](./mobile-rn-dev.md))**: Chuyên gia React Native (Cross-platform).
+10. **💙 Mobile Flutter Developer ([mobile-flutter-dev.md](./mobile-flutter-dev.md))**: Chuyên gia Flutter (Cross-platform).
+11. **🍎 Mobile Swift Developer ([mobile-swift-dev.md](./mobile-swift-dev.md))**: Chuyên gia Native iOS (Swift).
+12. **🤖 Mobile Kotlin Developer ([mobile-kotlin-dev.md](./mobile-kotlin-dev.md))**: Chuyên gia Native Android (Kotlin).
+13. **☕ Mobile Java Developer ([mobile-java-dev.md](./mobile-java-dev.md))**: Chuyên gia Native Android/Legacy (Java).
+14. **🏛️ Mobile Obj-C Developer ([mobile-objc-dev.md](./mobile-objc-dev.md))**: Chuyên gia Native iOS/Legacy (Objective-C).
 
-### 3. 🗄️ Database Expert ([database-expert.md](./database-expert.md))
-*   **Vai trò**: Chuyên gia Cơ sở dữ liệu.
-*   **Nhiệm vụ**: Thiết kế Schema (Prisma), tối ưu hóa câu lệnh truy vấn, quản lý Migration và đảm bảo hiệu năng DB.
-
-### 4. 🎨 UI Analyst ([ui-analyst.md](./ui-analyst.md))
-*   **Vai trò**: Chuyên gia phân tích giao diện.
-*   **Nhiệm vụ**: Bóc tách component (Atomic Design), xác định Design System và quy trình tương tác người dùng.
-
-### 5. 💻 Frontend Developer ([frontend-dev.md](./frontend-dev.md))
-*   **Vai trò**: Senior Frontend Engineer (Multi-Framework Specialist).
-*   **Nhiệm vụ**: Triển khai UI/UX trên React (Next.js), Vue (Nuxt.js), quản lý State, kết nối API và tối ưu hiệu năng phía Client.
-
-### 6. ⚙️ Backend Developer ([backend-dev.md](./backend-dev.md))
-*   **Vai trò**: Senior Backend Developer (Node.js & NestJS Expert).
-*   **Nhiệm vụ**: Triển khai logic nghiệp vụ chuyên sâu trên NestJS/Node.js, tối ưu Performance hệ thống và đảm bảo Type-safety (Next.js là phụ trợ).
-
-### 7. 🛡️ Security & Privacy Expert ([security-expert.md](./security-expert.md))
-*   **Vai trò**: Chuyên gia Bảo mật.
-*   **Nhiệm vụ**: Rà soát mã nguồn (Audit), bảo mật dữ liệu, thiết kế luồng Auth an toàn và kiểm tra Dependency.
-
-### 8. ⚡ Performance & Scaling Expert ([performance-expert.md](./performance-expert.md))
-*   **Vai trò**: Chuyên gia Hiệu năng & Mở rộng.
-*   **Nhiệm vụ**: Tối ưu hóa Response Time, thiết kế hệ thống Caching, quản lý Tải (Queue) và Profiling.
-
-### 9. 🔍 Reviewer & Refactor ([reviewer.md](./reviewer.md))
-*   **Vai trò**: Chuyên gia kiểm soát chất lượng & Tái cấu trúc.
-*   **Nhiệm vụ**: Review mã nguồn theo chuẩn Clean Code, thực hiện refactoring và đảm bảo tính nhất quán của project.
-
-### 10. 🧪 Tester ([tester.md](./tester.md))
-*   **Vai trò**: Kỹ sư kiểm thử tự động.
-*   **Nhiệm vụ**: Viết Unit test, Integration test, E2E và kiểm tra các kịch bản lỗi (Edge cases).
-
-### 11. 🚀 DevOps & SRE ([devops-sre.md](./devops-sre.md))
-*   **Vai trò**: Chuyên gia Hạ tầng & Triển khai.
-*   **Nhiệm vụ**: Quản lý Docker, CI/CD, cấu hình môi trường, bảo mật hạ tầng và giám sát (Sentry).
+### 🛡️ Quality & Operations
+15. **🛡️ Security Expert ([security-expert.md](./security-expert.md))**: Chuyên gia rà soát bảo mật.
+16. **⚡ Performance Expert ([performance-expert.md](./performance-expert.md))**: Chuyên gia tối ưu hiệu năng.
+17. **🔍 Reviewer & Refactor ([reviewer.md](./reviewer.md))**: Kiểm soát chất lượng code.
+18. **🧪 Tester ([tester.md](./tester.md))**: Kiểm thử tự động.
+19. **🚀 DevOps & SRE ([devops-sre.md](./devops-sre.md))**: Hạ tầng, CI/CD, Docker.
 
 ---
 
