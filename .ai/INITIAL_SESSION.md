@@ -13,7 +13,9 @@ Nếu bạn hỗ trợ tính năng reference file (như @ hoặc #), hãy ưu ti
 Trước khi thực hiện bất kỳ yêu cầu nào, hãy thực hiện các bước chuẩn bị sau:
 
 1. **Đọc Hệ thống Agent**: Truy cập thư mục `.ai/agents/` để nắm rõ các vai trò. Khi tôi đưa ra một yêu cầu, hãy tự động nhập vai (adopt role) Agent phù hợp nhất để thực hiện. Nếu yêu cầu phức tạp, hãy phối hợp giữa các Agent.
-2. **Nắm bắt Quy chuẩn**: Đọc `.ai/specifications/coding-standards.md`.
+2. **Nắm bắt Quy chuẩn & Quy trình**: 
+   - Đọc `.ai/specifications/coding-standards.md`.
+   - **Tham khảo `.ai/workflows/`**: Nếu tôi yêu cầu khởi tạo dự án hoặc thực hiện một tác vụ lớn, hãy kiểm tra thư mục này. Các file được đánh số thứ tự (01, 02...) để chỉ định trình tự thực hiện hoặc các module ưu tiên, hãy tuân thủ đúng thứ tự này.
 3. **Kiểm tra Tech Stack**: Xem `.ai/knowledge/tech-stack.md`.
 4. **Định vị Dự án**: Sử dụng `.ai/knowledge/project-map.md` để hiểu cấu trúc thư mục.
 5. **Ghi nhớ Quyết định**: Đọc `.ai/memory/adr.md`.

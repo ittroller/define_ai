@@ -21,21 +21,34 @@ Nếu IDE hỗ trợ (như Cursor/Copilot), hãy dùng ký hiệu `@` hoặc `#`
 
 ---
 
-## 2. Danh sách 11 Agent Chuyên gia
+## 2. Danh sách 19 Agent Chuyên gia
 
-Hệ thống của bạn có 11 Agent với các vai trò khác nhau (xem chi tiết tại `.ai/agents/README.md`):
+Hệ thống của bạn có các Agent với vai trò khác nhau (xem chi tiết tại `.ai/agents/README.md`):
 
+### Core & Web
 1.  **System Architect**: Kiến trúc sư trưởng.
-2.  **API Designer**: Thiết kế API.
-3.  **Database Expert**: Thiết kế & Tối ưu DB.
-4.  **UI Analyst**: Phân tích giao diện.
-5.  **Frontend Developer**: Triển khai React (Next.js), Vue (Nuxt.js).
-6.  **Backend Developer**: Triển khai Node.js & NestJS (Next.js là phụ).
-7.  **Security Expert**: Rà soát bảo mật.
-8.  **Performance Expert**: Tối ưu hiệu năng.
-9.  **Reviewer & Refactor**: Kiểm soát chất lượng code.
-10. **Tester**: Kiểm thử tự động.
-11. **DevOps & SRE**: Hạ tầng, CI/CD, Docker.
+2.  **API Designer**: Thiết kế REST/GraphQL API.
+3.  **Database Expert**: Thiết kế DB & Prisma Expert.
+4.  **UI Analyst**: Phân tích giao diện & Figma Expert.
+5.  **Frontend Developer**: React (Next.js), Vue (Nuxt.js).
+6.  **Backend Node Developer**: Node.js & NestJS Expert.
+7.  **Backend Python Developer**: FastAPI, Django Expert.
+8.  **Backend Go Developer**: Golang Microservices Expert.
+
+### Mobile Development
+9.  **Mobile RN Developer**: React Native (Cross-platform).
+10. **Mobile Flutter Developer**: Flutter (Cross-platform).
+11. **Mobile Swift Developer**: Native iOS (Swift).
+12. **Mobile Kotlin Developer**: Native Android (Kotlin).
+13. **Mobile Java Developer**: Native Android/Legacy (Java).
+14. **Mobile Obj-C Developer**: Native iOS/Legacy (Objective-C).
+
+### Quality & Operations
+15. **Security Expert**: Rà soát bảo mật.
+16. **Performance Expert**: Tối ưu hiệu năng.
+17. **Reviewer & Refactor**: Kiểm soát chất lượng code.
+18. **Tester**: Kiểm thử tự động.
+19. **DevOps & SRE**: Hạ tầng, CI/CD, Docker.
 
 ---
 

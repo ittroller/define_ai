@@ -82,4 +82,33 @@ npm pack --dry-run
 
 ---
 
+## 🆘 7. Xử lý sự cố (Troubleshooting)
+
+### Lỗi: "Thư mục .ai đã tồn tại"
+Khi bạn chạy `npx minhck-dot-ai` và nhận được thông báo thư mục đã tồn tại, bạn có 2 cách để giải quyết:
+
+**Cách 1: Cập nhật bằng lệnh --force (Khuyên dùng)**
+Nếu bạn muốn cập nhật bộ khung lên bản mới nhất mà không muốn xóa thư mục bằng tay:
+```bash
+npx minhck-dot-ai --force
+```
+*(Lưu ý: Lệnh này sẽ ghi đè toàn bộ nội dung trong thư mục `.ai` hiện tại của bạn).*
+
+**Cách 2: Xóa thủ công**
+1.  **Xóa thư mục `.ai` cũ:**
+    ```bash
+    rm -rf .ai
+    ```
+2.  **Chạy lại lệnh cài đặt:**
+    ```bash
+    npx minhck-dot-ai
+    ```
+
+### Lỗi: "Command not found: define-ai"
+Nếu bạn cài đặt toàn cục (`npm install -g`) mà không chạy được lệnh:
+- Hãy thử dùng `npx minhck-dot-ai` (không cần cài đặt, luôn là bản mới nhất).
+- Hoặc kiểm tra lại biến môi trường PATH của npm.
+
+---
+
 **Phát triển bởi MinhCK**
