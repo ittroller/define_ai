@@ -4,7 +4,7 @@
   "description": "Bộ khung AI Agent cho dự án của bạn by MinhCK",
   "main": "index.js",
   "bin": {
-    "define-ai": "./bin/cli.js"
+    "define-ai": "bin/cli.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
