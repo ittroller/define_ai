@@ -52,27 +52,26 @@ git push origin master
 
 ### Bước 4: Publish lên NPM (Cập nhật cho người dùng)
 Để người dùng (những người chạy lệnh `npx`) nhận được bản cập nhật mới nhất:
-1.  Lấy mã OTP từ app Authenticator trên điện thoại.
-2.  Chạy lệnh:
+1.  **Chạy lệnh publish:**
     ```bash
-    npm publish --otp=XXXXXX
+    npm publish
     ```
+2.  **Xác thực 2FA:** 
+    - Với các bản npm hiện đại, Terminal sẽ tự động mở trình duyệt hoặc hiển thị một thông báo yêu cầu bạn xác thực trên máy tính/điện thoại.
+    - Bạn chỉ cần thực hiện theo hướng dẫn trên màn hình là xong.
+    - *Nếu Terminal không tự điều hướng, bạn có thể dùng phương án dự phòng:* `npm publish --otp=XXXXXX`.
+    - OTP code có thể lấy từ các app như Authy, Google Authenticator, Microsoft Authenticator, ... nếu các app đó đã quét tài khoản Github của bạn vào.
 
 ---
 
-## 🔍 5. Kiểm tra trước khi Push/Publish
+## 🔍 5. Quy trình Đẩy Code & Bảo trì Dự án (Tóm tắt)
 
-Trước khi thực hiện Bước 4, bạn có thể chạy lệnh này để xem thử gói hàng (package) gửi đi sẽ trông như thế nào:
-```bash
-npm pack --dry-run
-```
-**Hãy đảm bảo:**
-- `total files` là khoảng **32** (chứa đầy đủ các file trong thư mục `.ai`).
-- Không có các file rác như `.DS_Store` hay thư mục `.idea` trong danh sách (đã được cấu hình trong `.npmignore`).
+Để quản lý dự án một cách chuyên nghiệp, bạn hãy tuân thủ 4 bước này:
 
----
-
-## 📝 6. Những thứ CẦN và KHÔNG NÊN sửa
+1.  **Sửa code**: Thay đổi nội dung trong `.ai/` hoặc `bin/cli.js`.
+2.  **Tăng version**: Sửa file `package.json` (ví dụ từ `1.3.1` lên `1.3.2`).
+3.  **Lưu & Merge**: Đẩy code lên Git -> Tạo Pull Request -> Merge vào `master`.
+4.  **Publish**: Checkout sang `master`, kéo code mới nhất về (`git pull`) và chạy `npm publish`.
 
 - ✅ **NÊN**: Cập nhật các file `.md` trong `.ai/agents/` để AI thông minh hơn.
 - ✅ **NÊN**: Thêm các workflow mới vào `.ai/workflows/`.
