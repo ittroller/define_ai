@@ -1,6 +1,8 @@
 .idea/
 .DS_Store
+**/.DS_Store
 .ai/
 *.log
+node_modules/
 package.json.sample
 ./bin/cli.js.sample
