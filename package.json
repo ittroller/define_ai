@@ -1,0 +1,24 @@
+{
+  "name": "minhck-dot-ai",
+  "version": "1.0.0",
+  "description": "Bộ khung AI Agent cho dự án của bạn by MinhCK",
+  "main": "index.js",
+  "bin": {
+    "define-ai": "./bin/cli.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "ai",
+    "agent",
+    "prompt",
+    "framework",
+    "minhck"
+  ],
+  "author": "MinhCK",
+  "license": "ISC",
+  "dependencies": {
+    "fs-extra": "^11.2.0"
+  }
+}

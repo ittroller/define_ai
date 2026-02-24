@@ -1,0 +1,6 @@
+.idea/
+.DS_Store
+.ai/
+*.log
+package.json.sample
+./bin/cli.js.sample
