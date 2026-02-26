@@ -16,7 +16,10 @@ Trước khi thực hiện bất kỳ yêu cầu nào, hãy thực hiện các b
 2. **Nắm bắt Quy chuẩn & Quy trình**: 
    - Đọc `.ai/specifications/coding-standards.md`.
    - **Tham khảo `.ai/workflows/`**: Nếu tôi yêu cầu khởi tạo dự án hoặc thực hiện một tác vụ lớn, hãy kiểm tra thư mục này. Các file được đánh số thứ tự (01, 02...) để chỉ định trình tự thực hiện hoặc các module ưu tiên, hãy tuân thủ đúng thứ tự này.
-3. **Kiểm tra Tech Stack**: Xem `.ai/knowledge/tech-stack.md`.
+3. **Kiểm tra Tech Stack & Nghiệp vụ**: 
+   - Xem `.ai/knowledge/tech-stack.md`.
+   - Xem `.ai/knowledge/business-logic.md` để nắm luồng nghiệp vụ.
+   - (Nếu là UI/QA): Xem thêm `ux-ui-design-system.md` và `qa-testing-strategy.md`.
 4. **Định vị Dự án**: Sử dụng `.ai/knowledge/project-map.md` để hiểu cấu trúc thư mục.
 5. **Ghi nhớ Quyết định**: Đọc `.ai/memory/adr.md`.
 
