@@ -23,9 +23,10 @@ npx minhck-dot-ai
 
 Sau khi cài đặt thành công, hãy thực hiện các bước sau để AI hoạt động chính xác:
 
-1.  **Mồi ngữ cảnh:** Mở file `.ai/INITIAL_SESSION.md`, copy nội dung và gửi cho AI của bạn (Cursor Chat, Copilot Chat).
+1.  **Mồi ngữ cảnh:** Mở file `INITIAL_SESSION.md` (nếu đã đồng bộ) hoặc `.ai/INITIAL_SESSION.md` (nếu chưa), copy nội dung và gửi cho AI của bạn (Cursor Chat, Copilot Chat).
 2.  **Cập nhật thông tin dự án:** Chỉnh sửa file `.ai/knowledge/tech-stack.md` để AI biết dự án của bạn dùng công nghệ gì (React, Node.js, v.v.).
 3.  **Quét cấu trúc dự án:** Yêu cầu AI đọc cấu trúc thư mục và cập nhật vào `.ai/knowledge/project-map.md`.
+4.  **🔄 Đồng bộ cho IDE:** Chạy lệnh `bash .ai/sync-to-agent.sh` để AI có thể nhận diện cấu hình trong IDE của bạn (Cursor, Windsurf, Roo Code, Antigravity, VS Code, Claude, WebStorm, Zed, Aider, Continue, v.v.). Sau khi chạy, thư mục `.ai` sẽ được xóa để giữ dự án sạch sẽ.
 
 ---
 

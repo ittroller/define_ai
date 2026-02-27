@@ -61,12 +61,27 @@ Hệ thống của bạn có các Agent với vai trò khác nhau (xem chi tiế
 
 ---
 
-## 4. Hướng dẫn Đồng bộ (Dành cho Antigravity IDE)
+## 4. 🔄 Hướng dẫn Đồng bộ cho các IDE (QUAN TRỌNG)
 
-Nếu bạn dùng Antigravity, bạn cần đồng bộ bộ não `.ai` vào thư mục `.agent` của IDE:
+Dự án này sử dụng cấu hình AI "di động" trong thư mục `.ai`. Để IDE của bạn nhận diện được toàn bộ nội dung (Agents, Specifications, Knowledge, Memory, Prompts), bạn cần thực hiện đồng bộ một lần duy nhất:
+
 1.  Mở terminal tại thư mục gốc dự án.
 2.  Chạy lệnh: `bash .ai/sync-to-agent.sh`
-3.  Kiểm tra thư mục `.agent` để đảm bảo các quy tắc đã được cập nhật.
+3.  **Thư mục `.ai` sẽ tự động được xóa đi** sau khi đồng bộ thành công vào các thư mục chuẩn của IDE:
+    -   **Antigravity**: `.agent/`
+    -   **Cursor**: `.cursor/rules/`
+    -   **Windsurf**: `.windsurfrules` (Tổng hợp)
+    -   **Roo Code / Cline**: `.clinerules` (Tổng hợp)
+    -   **PearAI**: `.pearai/rules/`
+    -   **Trae**: `.traerules` (Tổng hợp)
+    -   **VS Code / Copilot**: `.github/copilot-instructions.md` (Tổng hợp)
+    -   **Claude IDE / Desktop**: `.claude-instructions.md` (Tổng hợp)
+    -   **WebStorm / JetBrains**: `.idea/ai-instructions.md` (Tổng hợp)
+    -   **Zed**: `.zed/instructions.md` (Tổng hợp)
+    -   **Aider (CLI)**: `.aider.instructions.md` (Tổng hợp)
+    -   **Continue**: `.continue/rules/` (Đầy đủ)
+    -   **Neovim**: Tự động nhận diện `.cursorrules` hoặc `.clinerules`.
+4.  **Khởi tạo**: Sau khi đồng bộ, file `INITIAL_SESSION.md` sẽ xuất hiện ở thư mục gốc. Hãy mở nó để bắt đầu phiên chat với AI.
 
 ---
 
