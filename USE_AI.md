@@ -67,7 +67,8 @@ Dự án này sử dụng cấu hình AI "di động" trong thư mục `.ai`. Đ
 
 1.  Mở terminal tại thư mục gốc dự án.
 2.  Chạy lệnh: `bash .ai/sync-to-agent.sh`
-3.  **Thư mục `.ai` sẽ tự động được xóa đi** sau khi đồng bộ thành công vào các thư mục chuẩn của IDE:
+3.  **Sao lưu an toàn**: Script sẽ tự động tìm và sao lưu các cấu hình AI hiện có vào thư mục `.ai_backups/` trước khi thực hiện đồng bộ.
+4.  **Thư mục `.ai` sẽ tự động được xóa đi** sau khi đồng bộ thành công vào các thư mục chuẩn của IDE:
     -   **Antigravity**: `.agent/`
     -   **Cursor**: `.cursor/rules/`
     -   **Windsurf**: `.windsurfrules` (Tổng hợp)

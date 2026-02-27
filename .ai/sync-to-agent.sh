@@ -11,6 +11,44 @@ if [ ! -d ".ai" ]; then
     exit 1
 fi
 
+# --- 0. Kiểm tra và Sao lưu cấu hình AI hiện tại (Safety first!) ---
+echo "🛡️ Đang kiểm tra và sao lưu các cấu hình AI hiện có..."
+BACKUP_ROOT=".ai_backups"
+TIMESTAMP=$(date +%Y%m%d_%H%M%S)
+BACKUP_PATH="$BACKUP_ROOT/backup_$TIMESTAMP"
+
+TARGETS=(
+    ".agent" ".cursor/rules" ".windsurfrules" ".clinerules" 
+    ".pearai/rules" ".traerules" ".github/copilot-instructions.md" 
+    ".claude-instructions.md" ".idea/ai-instructions.md" 
+    ".zed/instructions.md" ".aider.instructions.md" ".continue/rules"
+    "./INITIAL_SESSION.md"
+)
+
+FOUND_OLD=false
+for target in "${TARGETS[@]}"; do
+    if [ -e "$target" ]; then
+        if [ "$FOUND_OLD" = false ]; then
+            mkdir -p "$BACKUP_PATH"
+            FOUND_OLD=true
+        fi
+        echo "   📦 Sao lưu: $target"
+        # Tạo thư mục tương ứng trong backup để giữ cấu trúc
+        DIR_NAME=$(dirname "$target")
+        if [ "$DIR_NAME" != "." ] && [ "$DIR_NAME" != "./" ]; then
+            mkdir -p "$BACKUP_PATH/$DIR_NAME"
+        fi
+        cp -R "$target" "$BACKUP_PATH/$target" 2>/dev/null
+    fi
+done
+
+if [ "$FOUND_OLD" = true ]; then
+    echo "✅ Đã sao lưu các cấu hình cũ vào thư mục: $BACKUP_PATH"
+    echo "⚠️ Lưu ý: Quá trình đồng bộ sẽ ghi đè các file này để khớp với bộ khung .ai mới nhất."
+else
+    echo "✨ Không tìm thấy cấu hình AI cũ cần sao lưu."
+fi
+
 echo "🔄 Bắt đầu quá trình đồng bộ AI Agents..."
 
 # --- 1. Antigravity (.agent) ---
