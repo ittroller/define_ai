@@ -71,24 +71,38 @@ Hệ thống bao gồm 19 Agent chuyên gia phối hợp chặt chẽ:
 18. **[Tester](./agents/tester.md)**: Kiểm thử tự động.
 19. **[DevOps & SRE](./agents/devops-sre.md)**: Hạ tầng, CI/CD, Docker.
 
-## Hướng dẫn đồng bộ (Sync)
-Nếu bạn đang sử dụng **Antigravity IDE**, bạn cần đồng bộ thư mục `.ai` vào thư mục `.agent` để IDE có thể nhận diện các Agent và Workflow.
+## 🔄 Hướng dẫn Đồng bộ (Sync) cho các IDE (QUAN TRỌNG)
 
-### Cách thực hiện:
-Chạy lệnh sau từ thư mục gốc của dự án:
+Để AI có thể hoạt động hiệu quả nhất, bạn cần đồng bộ toàn bộ nội dung trong thư mục `.ai` vào cấu hình chuẩn của IDE bạn đang sử dụng. 
+
+**Chạy lệnh sau từ thư mục gốc của dự án để tự động thực hiện:**
 ```bash
-./.ai/sync-to-agent.sh
+bash .ai/sync-to-agent.sh
 ```
 
-### Script này sẽ làm gì?
-1. Copy toàn bộ Agent từ `.ai/agents/` vào `.agent/rules/`.
-2. Copy toàn bộ Workflow từ `.ai/workflows/` vào `.agent/workflows/`.
-3. Tạo một Skill mới tên là `project-context` trong `.agent/skills/` chứa toàn bộ:
-    - **Specifications**: Quy chuẩn coding.
-    - **Knowledge**: Tri thức dự án.
-    - **Memory**: Trí nhớ kiến trúc.
-    - **Prompts**: Câu lệnh mẫu.
-    - **MCP**: Cấu hình công cụ.
+### Sau khi chạy script này:
+1.  **Thư mục `.ai` sẽ được xóa bỏ** để giữ dự án sạch sẽ.
+2.  **Toàn bộ cấu hình (Agents, Specifications, Knowledge, Memory, Prompts) sẽ được chuyển vào các thư mục tương ứng:**
+    -   **Antigravity**: Chuyển vào `.agent/`
+    -   **Cursor**: Chuyển vào `.cursor/rules/`
+    -   **Windsurf**: Tổng hợp vào `.windsurfrules`
+    -   **Roo Code / Cline**: Tổng hợp vào `.clinerules`
+    -   **PearAI**: Chuyển vào `.pearai/rules/`
+    -   **Trae**: Tổng hợp vào `.traerules`
+    -   **VS Code**: Tổng hợp vào `.github/copilot-instructions.md`
+    -   **Claude IDE / Desktop**: Tổng hợp vào `.claude-instructions.md`
+    -   **WebStorm / JetBrains**: Tổng hợp vào `.idea/ai-instructions.md`
+    -   **Zed**: Tổng hợp vào `.zed/instructions.md`
+    -   **Aider (CLI)**: Tổng hợp vào `.aider.instructions.md`
+    -   **Continue**: Chuyển vào `.continue/rules/`
+3.  **File `INITIAL_SESSION.md`** sẽ được đưa ra thư mục gốc để bạn dễ dàng bắt đầu phiên làm việc.
+
+---
+
+## 🛠️ Hỗ trợ các IDE khác & Neovim
+- **Neovim (Avante.nvim / CodeCompanion)**: Các plugin này thường tự động nhận diện file `.cursorrules` hoặc `.clinerules` đã được tạo trong quá trình đồng bộ.
+- **Android Studio**: Sử dụng chung cấu hình với WebStorm (`.idea/ai-instructions.md`).
+- **Visual Studio**: Bạn có thể tham chiếu trực tiếp đến các file trong thư mục `.agent/` sau khi đồng bộ.
 
 ---
 
