@@ -81,8 +81,9 @@ bash .ai/sync-to-agent.sh
 ```
 
 ### Sau khi chạy script này:
-1.  **Thư mục `.ai` sẽ được xóa bỏ** để giữ dự án sạch sẽ.
-2.  **Toàn bộ cấu hình (Agents, Specifications, Knowledge, Memory, Prompts) sẽ được chuyển vào các thư mục tương ứng:**
+1.  **Tự động Sao lưu**: Script sẽ phát hiện và sao lưu toàn bộ cấu hình AI cũ của bạn (nếu có) vào thư mục `.ai_backups/` để đảm bảo an toàn.
+2.  **Thư mục `.ai` sẽ được xóa bỏ** để giữ dự án sạch sẽ.
+3.  **Toàn bộ cấu hình (Agents, Specifications, Knowledge, Memory, Prompts) sẽ được chuyển vào các thư mục tương ứng:**
     -   **Antigravity**: Chuyển vào `.agent/`
     -   **Cursor**: Chuyển vào `.cursor/rules/`
     -   **Windsurf**: Tổng hợp vào `.windsurfrules`
