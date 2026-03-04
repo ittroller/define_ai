@@ -1,0 +1,27 @@
+#!/bin/bash
+
+# =================================================================
+# Script: Pre-finish Check (Kiểm tra trước khi hoàn tất)
+# Mục đích: Đảm bảo code không có lỗi lint và test trước khi bàn giao
+# =================================================================
+
+echo "🔍 Đang chạy kiểm tra tự động (AI Guardrails)..."
+
+# 1. Kiểm tra Linter
+if npm run lint; then
+    echo "✅ Linter: OK"
+else
+    echo "❌ Linter: FAILED. Vui lòng sửa các lỗi style trước."
+    exit 1
+fi
+
+# 2. Kiểm tra Tests (Chỉ chạy các file liên quan hoặc nhanh)
+if npm test -- --watchAll=false; then
+    echo "✅ Tests: OK"
+else
+    echo "❌ Tests: FAILED. Vui lòng đảm bảo không có test nào bị hỏng."
+    exit 1
+fi
+
+echo "🚀 Tất cả bài kiểm tra đã vượt qua! AI có thể hoàn tất task."
+exit 0
