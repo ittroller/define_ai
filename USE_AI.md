@@ -32,7 +32,7 @@ Hệ thống của bạn có các Agent với vai trò khác nhau (xem chi tiế
 4.  **UI Analyst**: Phân tích giao diện & Figma Expert.
 5.  **Frontend Developer**: React (Next.js), Vue (Nuxt.js).
 6.  **Backend Node Developer**: Node.js & NestJS Expert.
-7.  **Backend Python Developer**: FastAPI, Django Expert.
+7.  **Backend Python Developer**: FastAPI, Django, Odoo Expert.
 8.  **Backend Go Developer**: Golang Microservices Expert.
 
 ### Mobile Development
