@@ -13,13 +13,14 @@ fi
 
 # Nhận tham số & Tự động nhận diện IDE
 TARGET_IDE=""
-FORCE_DELETE=""
+FORCE_DELETE="yes" # Mặc định là xóa để giữ dự án sạch sẽ
 FORCE_CLEAN_BACKUP=""
 
 # 1. Nhận diện qua tham số dòng lệnh
 for arg in "$@"; do
     case $arg in
-        --delete|-d) FORCE_DELETE="--delete" ;;
+        --delete|-d) FORCE_DELETE="yes" ;;
+        --keep|-k) FORCE_DELETE="no" ;;
         --clean|-c) FORCE_CLEAN_BACKUP="--clean" ;;
         jetbrains|cursor|vscode|claude|xcode|antigravity|all) TARGET_IDE="$arg" ;;
         *) [[ ! $arg == -* ]] && [ -z "$TARGET_IDE" ] && TARGET_IDE="$arg" ;;
@@ -182,14 +183,14 @@ BACKUP_PATH="$BACKUP_ROOT/backup_$TIMESTAMP"
 
 ALL_TARGETS=(
     ".agent" ".cursor/rules" ".github/copilot-instructions.md" 
-    ".claude-instructions.md" ".claude/" ".idea/ai-instructions.md" 
-    ".idea/ai-agents/" ".idea/CLAUDE.md"
+    ".claude-instructions.md" ".claude/" ".ai-agents/" 
+    ".idea/ai-instructions.md" ".idea/CLAUDE.md"
     "./INITIAL_SESSION.md" ".xcoderules"
 )
 
 # Lọc targets dựa trên IDE được chọn để sao lưu chính xác
 if [ "$TARGET_IDE" == "jetbrains" ]; then
-    IDE_TARGETS=(".idea/ai-instructions.md" ".idea/ai-agents/" ".idea/CLAUDE.md" "./INITIAL_SESSION.md")
+    IDE_TARGETS=(".ai-agents/" ".idea/ai-instructions.md" ".idea/CLAUDE.md" "./INITIAL_SESSION.md")
 elif [ "$TARGET_IDE" == "cursor" ]; then
     IDE_TARGETS=(".cursor/rules" "./INITIAL_SESSION.md")
 elif [ "$TARGET_IDE" == "vscode" ]; then
@@ -263,7 +264,7 @@ cleanup_others() {
     [ "$EXCLUDE_IDE" != "cursor" ] && rm -rf .cursor
     [ "$EXCLUDE_IDE" != "vscode" ] && rm -rf .github/copilot-instructions.md
     [ "$EXCLUDE_IDE" != "claude" ] && { rm -rf .claude-instructions.md .claude; }
-    [ "$EXCLUDE_IDE" != "jetbrains" ] && { rm -rf .idea/ai-instructions.md .idea/ai-agents .idea/CLAUDE.md; }
+    [ "$EXCLUDE_IDE" != "jetbrains" ] && { rm -rf .ai-agents .idea/ai-instructions.md .idea/ai-agents .idea/CLAUDE.md; }
     [ "$EXCLUDE_IDE" != "xcode" ] && rm -rf .xcoderules
     
     # Xóa các file rác của các IDE đã bị loại bỏ hoàn toàn
@@ -355,48 +356,50 @@ sync_claude() {
 }
 
 sync_jetbrains() {
-    echo "📂 Đồng bộ cho JetBrains IDEs (.idea/ai-instructions.md)..."
-    # Đảm bảo thư mục .idea tồn tại
-    if [ ! -d ".idea" ]; then
-        echo "📝 Đang khởi tạo cấu trúc thư mục .idea cho JetBrains..."
-        mkdir -p .idea
-    fi
-    mkdir -p .idea/ai-agents/rules
-    mkdir -p .idea/ai-agents/specifications
-    mkdir -p .idea/ai-agents/knowledge
-    mkdir -p .idea/ai-agents/memory
-    mkdir -p .idea/ai-agents/skills
-    mkdir -p .idea/ai-agents/docs
-    mkdir -p .idea/ai-agents/hooks
+    echo "📂 Đồng bộ cho JetBrains IDEs (.ai-agents/)..."
+    # Dùng .ai-agents thay vì .idea vì WebStorm ẩn .idea theo mặc định
+    mkdir -p .ai-agents/rules
+    mkdir -p .ai-agents/specifications
+    mkdir -p .ai-agents/knowledge
+    mkdir -p .ai-agents/memory
+    mkdir -p .ai-agents/skills
+    mkdir -p .ai-agents/docs
+    mkdir -p .ai-agents/hooks
 
-    true > .idea/ai-instructions.md
+    true > .ai-agents/ai-instructions.md
 
     # 9.1 Đồng bộ file instructions tổng hợp
-    [ -d ".ai/agents" ] && cat .ai/agents/*.md >> .idea/ai-instructions.md
-    echo -e "\n\n# Project Skills\n" >> .idea/ai-instructions.md
-    [ -d ".ai/skills" ] && cat .ai/skills/*.md >> .idea/ai-instructions.md
-    echo -e "\n\n# Project Specifications\n" >> .idea/ai-instructions.md
-    [ -d ".ai/specifications" ] && cat .ai/specifications/*.md >> .idea/ai-instructions.md
-    echo -e "\n\n# Project Knowledge\n" >> .idea/ai-instructions.md
-    [ -d ".ai/knowledge" ] && cat .ai/knowledge/*.md >> .idea/ai-instructions.md
-    echo -e "\n\n# Project Memory\n" >> .idea/ai-instructions.md
-    [ -d ".ai/memory" ] && cat .ai/memory/*.md >> .idea/ai-instructions.md
-    echo -e "\n\n# Project Documentation\n" >> .idea/ai-instructions.md
-    [ -d ".ai/docs" ] && grep -r "" .ai/docs | grep ".md" | xargs cat >> .idea/ai-instructions.md 2>/dev/null
-    echo -e "\n\n# Project Hooks (Guardrails)\n" >> .idea/ai-instructions.md
-    [ -d ".ai/hooks" ] && cat .ai/hooks/*.md 2>/dev/null >> .idea/ai-instructions.md
+    [ -d ".ai/agents" ] && cat .ai/agents/*.md >> .ai-agents/ai-instructions.md
+    echo -e "\n\n# Project Skills\n" >> .ai-agents/ai-instructions.md
+    [ -d ".ai/skills" ] && cat .ai/skills/*.md >> .ai-agents/ai-instructions.md
+    echo -e "\n\n# Project Specifications\n" >> .ai-agents/ai-instructions.md
+    [ -d ".ai/specifications" ] && cat .ai/specifications/*.md >> .ai-agents/ai-instructions.md
+    echo -e "\n\n# Project Knowledge\n" >> .ai-agents/ai-instructions.md
+    [ -d ".ai/knowledge" ] && cat .ai/knowledge/*.md >> .ai-agents/ai-instructions.md
+    echo -e "\n\n# Project Memory\n" >> .ai-agents/ai-instructions.md
+    [ -d ".ai/memory" ] && cat .ai/memory/*.md >> .ai-agents/ai-instructions.md
+    echo -e "\n\n# Project Documentation\n" >> .ai-agents/ai-instructions.md
+    [ -d ".ai/docs" ] && grep -r "" .ai/docs | grep ".md" | xargs cat >> .ai-agents/ai-instructions.md 2>/dev/null
+    echo -e "\n\n# Project Hooks (Guardrails)\n" >> .ai-agents/ai-instructions.md
+    [ -d ".ai/hooks" ] && cat .ai/hooks/*.md 2>/dev/null >> .ai-agents/ai-instructions.md
 
-    # 9.2 Đồng bộ cấu trúc thư mục (Cho các plugin hỗ trợ folder-based rules)
-    [ -d ".ai/agents" ] && rsync -av --delete .ai/agents/ .idea/ai-agents/rules/
-    [ -d ".ai/specifications" ] && rsync -av --delete .ai/specifications/ .idea/ai-agents/specifications/
-    [ -d ".ai/knowledge" ] && rsync -av --delete .ai/knowledge/ .idea/ai-agents/knowledge/
-    [ -d ".ai/memory" ] && rsync -av --delete .ai/memory/ .idea/ai-agents/memory/
-    [ -d ".ai/skills" ] && rsync -av --delete .ai/skills/ .idea/ai-agents/skills/
-    [ -d ".ai/docs" ] && rsync -av --delete .ai/docs/ .idea/ai-agents/docs/
-    [ -d ".ai/hooks" ] && rsync -av --delete .ai/hooks/ .idea/ai-agents/hooks/
+    # 9.2 Đồng bộ cấu trúc thư mục
+    [ -d ".ai/agents" ] && rsync -av --delete .ai/agents/ .ai-agents/rules/
+    [ -d ".ai/specifications" ] && rsync -av --delete .ai/specifications/ .ai-agents/specifications/
+    [ -d ".ai/knowledge" ] && rsync -av --delete .ai/knowledge/ .ai-agents/knowledge/
+    [ -d ".ai/memory" ] && rsync -av --delete .ai/memory/ .ai-agents/memory/
+    [ -d ".ai/skills" ] && rsync -av --delete .ai/skills/ .ai-agents/skills/
+    [ -d ".ai/docs" ] && rsync -av --delete .ai/docs/ .ai-agents/docs/
+    [ -d ".ai/hooks" ] && rsync -av --delete .ai/hooks/ .ai-agents/hooks/
     
     # Một số plugin JetBrains dùng file CLAUDE.md hoặc .clinerules ngay trong .idea
-    cp .idea/ai-instructions.md .idea/CLAUDE.md
+    # Ta vẫn tạo một bản copy ẩn trong .idea để tương thích ngược
+    if [ ! -d ".idea" ]; then mkdir -p .idea; fi
+    cp .ai-agents/ai-instructions.md .idea/ai-instructions.md
+    cp .ai-agents/ai-instructions.md .idea/CLAUDE.md
+    # Giữ thư mục rules bên trong .idea cho các plugin hỗ trợ
+    mkdir -p .idea/ai-agents
+    rsync -av --delete .ai-agents/ .idea/ai-agents/
 }
 
 sync_xcode() {
@@ -488,15 +491,15 @@ echo "------------------------------------------------"
         if [ "$TARGET_IDE" == "all" ] || [ "$TARGET_IDE" == "cursor" ]; then echo "📍 Cursor:      .cursor/rules/"; fi
         if [ "$TARGET_IDE" == "all" ] || [ "$TARGET_IDE" == "vscode" ]; then echo "📍 VS Code:     .github/copilot-instructions.md"; fi
         if [ "$TARGET_IDE" == "all" ] || [ "$TARGET_IDE" == "claude" ]; then echo "📍 Claude IDE:  .claude-instructions.md & .claude/"; fi
-        if [ "$TARGET_IDE" == "all" ] || [ "$TARGET_IDE" == "jetbrains" ]; then echo "📍 JetBrains:   .idea/ai-instructions.md & .idea/ai-agents/"; fi
+        if [ "$TARGET_IDE" == "all" ] || [ "$TARGET_IDE" == "jetbrains" ]; then echo "📍 JetBrains:   .ai-agents/ (Đã chuyển ra ngoài để hiển thị trong WebStorm)"; fi
         if [ "$TARGET_IDE" == "all" ] || [ "$TARGET_IDE" == "xcode" ]; then echo "📍 Xcode:       .xcoderules"; fi
     fi
 echo "📍 Khởi tạo:    ./INITIAL_SESSION.md"
 echo "------------------------------------------------"
 
-# Xóa thư mục .ai sau khi hoàn tất (chỉ khi có tham số --delete)
-if [ "$FORCE_DELETE" == "--delete" ]; then
-    echo "⚠️ Đang xóa thư mục gốc .ai theo yêu cầu..."
+# Xóa thư mục .ai sau khi hoàn tất
+if [ "$FORCE_DELETE" == "yes" ]; then
+    echo "⚠️ Đang xóa thư mục gốc .ai để giữ dự án sạch sẽ..."
     rm -rf .ai
 fi
 
@@ -506,7 +509,7 @@ if [ "$FORCE_CLEAN_BACKUP" == "--clean" ]; then
     rm -rf .ai_backups
 fi
 
-if [ "$FORCE_DELETE" == "--delete" ] || [ "$FORCE_CLEAN_BACKUP" == "--clean" ]; then
+if [ "$FORCE_DELETE" == "yes" ] || [ "$FORCE_CLEAN_BACKUP" == "--clean" ]; then
     echo "🚀 Hoàn tất và đã dọn dẹp!"
 else
     echo "💡 Thư mục gốc .ai vẫn được giữ lại để bạn có thể đồng bộ cho IDE khác nếu cần."

@@ -44,12 +44,12 @@ Các lệnh:
   init      Cài đặt bộ khung .ai vào dự án (Mặc định)
             Options: --force, -f  Ghi đè nếu đã tồn tại
 
-  sync      [ide] [--delete] [--clean]
+  sync      [ide] [--keep] [--clean]
             Đồng bộ cấu hình từ .ai sang các IDE.
             Script sẽ tự động nhận diện IDE qua terminal hoặc thư mục dự án.
             Các IDE hỗ trợ: jetbrains, cursor, vscode, claude, xcode, antigravity.
             Options:
-              --delete, -d  Xóa thư mục .ai sau khi đồng bộ xong
+              --keep, -k    Giữ lại thư mục .ai sau khi đồng bộ (Mặc định là xóa)
               --clean, -c   Xóa thư mục .ai_backups sau khi đồng bộ xong
 
   backup    Tạo bản sao lưu cho cấu hình AI hiện tại
@@ -58,7 +58,7 @@ Các lệnh:
 
 Ví dụ:
   npx minhck-dot-ai sync jetbrains
-  npx minhck-dot-ai sync cursor --delete
+  npx minhck-dot-ai sync cursor --keep
     `);
 }
 
@@ -135,6 +135,7 @@ async function clean() {
         '.claude-instructions.md',
         '.xcoderules',
         '.ide',
+        '.ai-agents',
         '.idea/ai-instructions.md',
         '.idea/ai-agents',
         '.idea/CLAUDE.md',
