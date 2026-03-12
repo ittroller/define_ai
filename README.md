@@ -26,7 +26,9 @@ Sau khi cài đặt thành công, hãy thực hiện các bước sau để AI h
 1.  **Mồi ngữ cảnh:** Mở file `INITIAL_SESSION.md` (nếu đã đồng bộ) hoặc `.ai/INITIAL_SESSION.md` (nếu chưa), copy nội dung và gửi cho AI của bạn (Cursor Chat, Copilot Chat).
 2.  **Cập nhật thông tin dự án:** Chỉnh sửa file `.ai/knowledge/tech-stack.md` để AI biết dự án của bạn dùng công nghệ gì (React, Node.js, v.v.).
 3.  **Quét cấu trúc dự án:** Yêu cầu AI đọc cấu trúc thư mục và cập nhật vào `.ai/knowledge/project-map.md`.
-4.  **🔄 Đồng bộ cho IDE:** Chạy lệnh `bash .ai/sync-to-agent.sh` để AI có thể nhận diện cấu hình trong IDE của bạn (Cursor, Windsurf, Roo Code, Antigravity, VS Code, Claude, WebStorm, Zed, Aider, Continue, v.v.). Sau khi chạy, thư mục `.ai` sẽ được xóa để giữ dự án sạch sẽ.
+-   **Đồng bộ cho IDE**: Chạy lệnh `bash .ai/sync-to-agent.sh` để AI nhận diện cấu hình.
+-   **Cách dùng WebStorm/JetBrains**: Xem hướng dẫn chi tiết tại [USE_AI.md#7-hướng-dẫn-sử-dụng-cho-webstorm--jetbrains-ai](USE_AI.md#7-%F0%9F%9A%80-h%C6%B0%E1%BB%9Bng-d%E1%BA%ABn-s%E1%BB%AD-d%E1%BB%A5ng-cho-webstorm--jetbrains-ai).
+-   **Thư viện câu lệnh mẫu**: Xem các ví dụ lệnh thực thi tại [USE_AI.md#8-thư-viện-câu-lệnh-thực-thi-actionable-command-library](USE_AI.md#8-%F0%9F%9B%A0%EF%B8%8F-th%C6%B0-vi%E1%BB%87n-c%C3%A2u-l%E1%BB%87nh-th%E1%BB%B1c-thi-actionable-command-library).
 
 ---
 

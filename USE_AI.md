@@ -103,4 +103,52 @@ Khi bạn copy thư mục `.ai` này sang dự án khác, hãy cập nhật:
 
 ---
 
+## 7. 🚀 Hướng dẫn sử dụng cho WebStorm & JetBrains AI
+
+Để WebStorm AI nhận diện và sử dụng đúng Agent (ví dụ: `backend-python-dev`), hãy thực hiện các bước sau sau khi đã chạy lệnh `sync`:
+
+1.  **Mồi ngữ cảnh (BẮT BUỘC)**:
+    - Mở file `INITIAL_SESSION.md` tại thư mục gốc.
+    - Copy nội dung phần **"Nội dung Prompt"**.
+    - Dán vào ô chat của **JetBrains AI Assistant**.
+2.  **Chỉ định Agent cụ thể**:
+    - **Highlight/Nhấn mạnh**: Để AI đóng vai chính xác, hãy thêm câu lệnh: 
+      > *"Hãy đóng vai `backend-python-dev` từ file `.idea/ai-agents/rules/backend-python-dev.md` để hỗ trợ tôi."*
+3.  **Sử dụng tính năng Mention (@)**:
+    - Gõ `@` trong ô chat và chọn file agent tương ứng trong thư mục `.idea/ai-agents/rules/` để AI đọc trực tiếp chỉ dẫn.
+
+---
+
+## 8. 🛠️ Thư viện câu lệnh thực thi (Actionable Command Library)
+
+Dưới đây là một số ví dụ câu lệnh bạn có thể copy và gửi cho AI để thực hiện các tác vụ cụ thể.
+
+### 🏗️ Phát triển tính năng (Feature Development)
+- `Triệu hồi @backend-node-dev.md, hãy tạo một API GET /users để lấy danh sách người dùng, sử dụng Prisma.`
+- `Dựa trên @05-feature-dev.md, hãy thiết kế module Auth với JWT theo phong cách NestJS.`
+- `Hãy phân tích UI Figma tại link này [link figma] và triệu hồi @ui-analyst.md để bóc tách các components cần thiết.`
+
+### 🐞 Sửa lỗi & Debug (Bug Fixing & Debugging)
+- `Tôi đang gặp lỗi [mô tả lỗi]. Triệu hồi @reviewer.md hãy phân tích file [tên file] và tìm nguyên nhân.`
+- `Hãy chạy workflow @04-bug-fixing.md để xử lý lỗi crash khi nhấn nút Đăng ký.`
+- `Dựa trên lỗi log này [copy log vào đây], hãy tìm file nào gây ra lỗi và đề xuất cách sửa.`
+
+### ♻️ Refactor & Tối ưu (Refactoring & Optimization)
+- `Triệu hồi @performance-expert.md, hãy tối ưu truy vấn SQL trong hàm getOrders này.`
+- `Dựa trên @coding-standards.md, hãy refactor file [tên file] để code sạch và dễ bảo trì hơn.`
+- `Hãy kiểm tra file [tên file] có vi phạm nguyên tắc SOLID nào không và sửa lại giúp tôi.`
+
+### 🧪 Viết Test (Testing)
+- `Triệu hồi @tester.md, hãy viết Unit Test cho hàm calculatePrice, đảm bảo độ bao phủ (coverage) 100%.`
+- `Hãy tạo script E2E test cho luồng thanh toán bằng Playwright dựa trên @docs/flows/checkout.md.`
+- `Hãy chạy test module Auth và báo cáo kết quả cho tôi.`
+
+### 📚 Viết Tài liệu (Documentation)
+- `Hãy viết tài liệu README.md cho module này, bao gồm cách cài đặt và sử dụng.`
+- `Hãy cập nhật file @project-map.md dựa trên cấu trúc thư mục hiện tại.`
+- `Hãy tóm tắt lịch sử quyết định trong dự án dựa trên thư mục @memory/adr/.`
+
+---
+
 **Lời khuyên**: Hãy luôn bắt đầu bằng `INITIAL_SESSION.md`. Đó là nút "Khởi động" để chuyển AI từ chế độ "AI chung chung" sang "AI chuyên gia của riêng dự án này".
+>,search:
