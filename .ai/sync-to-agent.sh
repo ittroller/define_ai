@@ -31,21 +31,24 @@ if [ -z "$TARGET_IDE" ]; then
     DETECTED_IDES=()
     
     # --- PHƯƠNG PHÁP 1: Nhận diện qua Cây tiến trình (Process Tree Tracing) ---
-    # Truy vết ngược lên tối đa 5 cấp để tìm xem terminal này có được chạy bởi IDE không
+    # Truy vết ngược lên tối đa 10 cấp để tìm xem terminal này có được chạy bởi IDE không
     CUR_PID=$PPID
-    for ((i=0; i<5; i++)); do
+    for ((i=0; i<10; i++)); do
         [ -z "$CUR_PID" ] || [ "$CUR_PID" -le 1 ] && break
-        PROC_NAME=$(ps -p $CUR_PID -o comm= 2>/dev/null | tr '[:upper:]' '[:lower:]')
+        # Lấy tên tiến trình và cả tham số (để bắt được CLI binary path)
+        PROC_FULL=$(ps -p $CUR_PID -o command= 2>/dev/null | tr '[:upper:]' '[:lower:]')
+        PROC_NAME=$(basename "$PROC_FULL" 2>/dev/null | awk '{print $1}')
+        
         if [[ -n "$PROC_NAME" ]]; then
-            if [[ "$PROC_NAME" == *"webstorm"* ]] || [[ "$PROC_NAME" == *"intellij"* ]] || [[ "$PROC_NAME" == *"phpstorm"* ]] || [[ "$PROC_NAME" == *"pycharm"* ]] || [[ "$PROC_NAME" == *"idea"* ]] || [[ "$PROC_NAME" == *"goland"* ]] || [[ "$PROC_NAME" == *"datagrip"* ]] || [[ "$PROC_NAME" == *"clion"* ]] || [[ "$PROC_NAME" == *"rustrover"* ]]; then
+            if [[ "$PROC_NAME" == *"webstorm"* ]] || [[ "$PROC_NAME" == *"intellij"* ]] || [[ "$PROC_NAME" == *"phpstorm"* ]] || [[ "$PROC_NAME" == *"pycharm"* ]] || [[ "$PROC_NAME" == *"idea"* ]] || [[ "$PROC_NAME" == *"goland"* ]] || [[ "$PROC_NAME" == *"datagrip"* ]] || [[ "$PROC_NAME" == *"clion"* ]] || [[ "$PROC_NAME" == *"rustrover"* ]] || [[ "$PROC_FULL" == *"jetbrains"* ]]; then
                 TARGET_IDE="jetbrains"
                 echo "🔍 Tự động nhận diện IDE (Process Trace): JetBrains ($PROC_NAME)"
                 break
-            elif [[ "$PROC_NAME" == *"cursor"* ]]; then
+            elif [[ "$PROC_NAME" == *"cursor"* ]] || [[ "$PROC_FULL" == *"cursor"* ]]; then
                 TARGET_IDE="cursor"
                 echo "🔍 Tự động nhận diện IDE (Process Trace): Cursor"
                 break
-            elif [[ "$PROC_NAME" == *"code"* ]] || [[ "$PROC_NAME" == *"visual studio code"* ]]; then
+            elif [[ "$PROC_NAME" == *"code"* ]] || [[ "$PROC_NAME" == *"visual studio code"* ]] || [[ "$PROC_FULL" == *"visual studio code"* ]]; then
                 TARGET_IDE="vscode"
                 echo "🔍 Tự động nhận diện IDE (Process Trace): VS Code"
                 break
@@ -66,15 +69,15 @@ if [ -z "$TARGET_IDE" ]; then
         CUR_PID=$(ps -p $CUR_PID -o ppid= 2>/dev/null | awk '{print $1}')
     done
 
-    # --- PHƯƠNG PHÁP 2: Nhận diện qua Biến môi trường (Environment Variables) ---
+    # --- PHƯƠNG PHÁP 2: Nhận diện qua Biến môi trường (Environment Variables & IPC) ---
     if [ -z "$TARGET_IDE" ]; then
         # JetBrains
-        if [ "$TERMINAL_EMULATOR" == "JetBrains-JediTerm" ] || [[ -n "$__CFBundleIdentifier" ]] && [[ "$__CFBundleIdentifier" == com.jetbrains.* ]] || [ -n "$IDEA_INITIAL_DIRECTORY" ]; then
+        if [ "$TERMINAL_EMULATOR" == "JetBrains-JediTerm" ] || [[ -n "$__CFBundleIdentifier" ]] && [[ "$__CFBundleIdentifier" == com.jetbrains.* ]] || [ -n "$IDEA_INITIAL_DIRECTORY" ] || [ -n "$IDE_PROJECT_DIR" ]; then
             TARGET_IDE="jetbrains"
             echo "🔍 Tự động nhận diện IDE (Environment): JetBrains"
         # VS Code / Cursor
-        elif [ "$TERM_PROGRAM" == "vscode" ] || [ -n "$VSCODE_IPC_HOOK_CLI" ] || [ -n "$VSCODE_GIT_IPC_HANDLE" ]; then
-            if [[ -n "$CURSOR_PROJECT_PATH" ]] || [[ -d ".cursor" ]]; then
+        elif [ "$TERM_PROGRAM" == "vscode" ] || [ -n "$VSCODE_IPC_HOOK_CLI" ] || [ -n "$VSCODE_GIT_IPC_HANDLE" ] || [ -n "$VSCODE_GIT_ASKPASS_NODE" ]; then
+            if [[ -n "$CURSOR_PROJECT_PATH" ]] || [[ -d ".cursor" ]] || [[ "$TERMINAL_EMULATOR" == "cursor" ]]; then
                 TARGET_IDE="cursor"
                 echo "🔍 Tự động nhận diện IDE (Environment): Cursor"
             else
@@ -89,6 +92,10 @@ if [ -z "$TARGET_IDE" ]; then
         elif [[ "$TERM_PROGRAM" == *"antigravity"* ]] || [[ -n "$ANTIGRAVITY_PROJECT_PATH" ]]; then
             TARGET_IDE="antigravity"
             echo "🔍 Tự động nhận diện IDE (Environment): Antigravity"
+        # Devcontainer fallback
+        elif [ -n "$REMOTE_CONTAINERS" ] || [ -n "$DEVCONTAINER" ]; then
+             if [ -d ".vscode" ]; then TARGET_IDE="vscode"; else TARGET_IDE="jetbrains"; fi
+             echo "🔍 Tự động nhận diện IDE (Devcontainer): $TARGET_IDE"
         fi
     fi
 
@@ -105,8 +112,54 @@ if [ -z "$TARGET_IDE" ]; then
             TARGET_IDE="${DETECTED_IDES[0]}"
             echo "🔍 Tự động nhận diện IDE (Filesystem): $TARGET_IDE"
         elif [ ${#DETECTED_IDES[@]} -gt 1 ]; then
-            TARGET_IDE="multi"
-            echo "🔍 Phát hiện nhiều IDE: ${DETECTED_IDES[*]}. Sẽ đồng bộ cho các IDE này."
+            # Ưu tiên nhận diện theo thứ tự nếu có nhiều dấu hiệu
+            if [ -d ".idea" ]; then
+                TARGET_IDE="jetbrains"
+            elif [ -d ".cursor" ]; then
+                TARGET_IDE="cursor"
+            elif [ -d ".vscode" ]; then
+                TARGET_IDE="vscode"
+            else
+                TARGET_IDE="multi"
+            fi
+            echo "🔍 Phát hiện nhiều dấu hiệu IDE (${DETECTED_IDES[*]}). Ưu tiên chọn: $TARGET_IDE"
+        fi
+    fi
+
+    # --- PHƯƠNG PHÁP 4: Phân tích PATH & Dependency Fingerprinting ---
+    if [ -z "$TARGET_IDE" ]; then
+        if [[ "$PATH" == *"WebStorm"* ]] || [[ "$PATH" == *"IntelliJ"* ]] || [[ "$PATH" == *"PyCharm"* ]]; then
+            TARGET_IDE="jetbrains"
+            echo "🔍 Tự động nhận diện IDE (Path Analysis): JetBrains"
+        elif [[ "$PATH" == *"Cursor"* ]]; then
+            TARGET_IDE="cursor"
+            echo "🔍 Tự động nhận diện IDE (Path Analysis): Cursor"
+        elif [[ "$PATH" == *"VS Code"* ]] || [[ "$PATH" == *"vscode"* ]]; then
+            TARGET_IDE="vscode"
+            echo "🔍 Tự động nhận diện IDE (Path Analysis): VS Code"
+        elif [ -f "package.json" ]; then
+            if grep -q "jetbrains" package.json 2>/dev/null; then
+                TARGET_IDE="jetbrains"
+                echo "🔍 Tự động nhận diện IDE (Fingerprinting): JetBrains"
+            elif grep -q "vscode" package.json 2>/dev/null; then
+                TARGET_IDE="vscode"
+                echo "🔍 Tự động nhận diện IDE (Fingerprinting): VS Code"
+            fi
+        fi
+    fi
+
+    # --- PHƯƠNG PHÁP 5: Window Title (macOS only) ---
+    if [ -z "$TARGET_IDE" ] && [[ "$OSTYPE" == "darwin"* ]]; then
+        FRONT_APP=$(osascript -e 'tell application "System Events" to get name of first process whose frontmost is true' 2>/dev/null | tr '[:upper:]' '[:lower:]')
+        if [[ "$FRONT_APP" == *"webstorm"* ]] || [[ "$FRONT_APP" == *"idea"* ]] || [[ "$FRONT_APP" == *"pycharm"* ]]; then
+            TARGET_IDE="jetbrains"
+            echo "🔍 Tự động nhận diện IDE (Window Title): JetBrains"
+        elif [[ "$FRONT_APP" == *"cursor"* ]]; then
+            TARGET_IDE="cursor"
+            echo "🔍 Tự động nhận diện IDE (Window Title): Cursor"
+        elif [[ "$FRONT_APP" == *"code"* ]]; then
+            TARGET_IDE="vscode"
+            echo "🔍 Tự động nhận diện IDE (Window Title): VS Code"
         fi
     fi
 
@@ -198,9 +251,29 @@ else
     echo "✨ Không tìm thấy cấu hình AI cũ cần sao lưu."
 fi
 
+# Các hàm đồng bộ cho từng IDE
+
+cleanup_others() {
+    local EXCLUDE_IDE=$1
+    echo "🧹 Đang dọn dẹp các cấu hình AI của các IDE khác để giữ dự án sạch sẽ..."
+    
+    # Danh sách tất cả các mục cấu hình AI có thể có
+    # (Trừ IDE đang được đồng bộ)
+    [ "$EXCLUDE_IDE" != "antigravity" ] && rm -rf .agent
+    [ "$EXCLUDE_IDE" != "cursor" ] && rm -rf .cursor
+    [ "$EXCLUDE_IDE" != "vscode" ] && rm -rf .github/copilot-instructions.md
+    [ "$EXCLUDE_IDE" != "claude" ] && { rm -rf .claude-instructions.md .claude; }
+    [ "$EXCLUDE_IDE" != "jetbrains" ] && { rm -rf .idea/ai-instructions.md .idea/ai-agents .idea/CLAUDE.md; }
+    [ "$EXCLUDE_IDE" != "xcode" ] && rm -rf .xcoderules
+    
+    # Xóa các file rác của các IDE đã bị loại bỏ hoàn toàn
+    rm -rf .continue .pearai .zed .aider.instructions.md .clinerules .traerules .windsurfrules
+}
+
 echo "🔄 Bắt đầu quá trình đồng bộ AI Agents cho: $TARGET_IDE..."
 
-# Các hàm đồng bộ cho từng IDE
+# Dọn dẹp rác của các IDE khác (nếu không phải mode 'all')
+cleanup_others "$TARGET_IDE"
 
 sync_antigravity() {
     echo "📂 Đồng bộ cho Antigravity (.agent)..."
@@ -399,12 +472,25 @@ fi
 
 echo "✅ Đồng bộ thành công cho: $TARGET_IDE!"
 echo "------------------------------------------------"
-if [ "$TARGET_IDE" == "all" ] || [ "$TARGET_IDE" == "antigravity" ]; then echo "📍 Antigravity: .agent/"; fi
-if [ "$TARGET_IDE" == "all" ] || [ "$TARGET_IDE" == "cursor" ]; then echo "📍 Cursor:      .cursor/rules/"; fi
-if [ "$TARGET_IDE" == "all" ] || [ "$TARGET_IDE" == "vscode" ]; then echo "📍 VS Code:     .github/copilot-instructions.md"; fi
-if [ "$TARGET_IDE" == "all" ] || [ "$TARGET_IDE" == "claude" ]; then echo "📍 Claude IDE:  .claude-instructions.md & .claude/"; fi
-if [ "$TARGET_IDE" == "all" ] || [ "$TARGET_IDE" == "jetbrains" ]; then echo "📍 JetBrains:   .idea/ai-instructions.md & .idea/ai-agents/"; fi
-if [ "$TARGET_IDE" == "all" ] || [ "$TARGET_IDE" == "xcode" ]; then echo "📍 Xcode:       .xcoderules"; fi
+    if [ "$TARGET_IDE" == "multi" ]; then
+        for ide in "${DETECTED_IDES[@]}"; do
+            case $ide in
+                "jetbrains") echo "📍 JetBrains:   .idea/ai-instructions.md & .idea/ai-agents/" ;;
+                "cursor") echo "📍 Cursor:      .cursor/rules/" ;;
+                "vscode") echo "📍 VS Code:     .github/copilot-instructions.md" ;;
+                "claude") echo "📍 Claude IDE:  .claude-instructions.md & .claude/" ;;
+                "antigravity") echo "📍 Antigravity: .agent/" ;;
+                "xcode") echo "📍 Xcode:       .xcoderules" ;;
+            esac
+        done
+    else
+        if [ "$TARGET_IDE" == "all" ] || [ "$TARGET_IDE" == "antigravity" ]; then echo "📍 Antigravity: .agent/"; fi
+        if [ "$TARGET_IDE" == "all" ] || [ "$TARGET_IDE" == "cursor" ]; then echo "📍 Cursor:      .cursor/rules/"; fi
+        if [ "$TARGET_IDE" == "all" ] || [ "$TARGET_IDE" == "vscode" ]; then echo "📍 VS Code:     .github/copilot-instructions.md"; fi
+        if [ "$TARGET_IDE" == "all" ] || [ "$TARGET_IDE" == "claude" ]; then echo "📍 Claude IDE:  .claude-instructions.md & .claude/"; fi
+        if [ "$TARGET_IDE" == "all" ] || [ "$TARGET_IDE" == "jetbrains" ]; then echo "📍 JetBrains:   .idea/ai-instructions.md & .idea/ai-agents/"; fi
+        if [ "$TARGET_IDE" == "all" ] || [ "$TARGET_IDE" == "xcode" ]; then echo "📍 Xcode:       .xcoderules"; fi
+    fi
 echo "📍 Khởi tạo:    ./INITIAL_SESSION.md"
 echo "------------------------------------------------"
 
