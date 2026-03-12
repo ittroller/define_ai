@@ -1,8 +1,14 @@
 .idea/
+.ide/
+.ai_backups/
+INITIAL_SESSION.md
+.agent/
+.cursor/
+.claude/
+.claude-instructions.md
+.xcoderules
 .DS_Store
 **/.DS_Store
 *.log
 node_modules/
-package.json.sample
-./bin/cli.js.sample
 package-lock.json

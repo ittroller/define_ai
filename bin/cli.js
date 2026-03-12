@@ -18,6 +18,9 @@ async function main() {
         case 'backup':
             await backup();
             break;
+        case 'clean':
+            await clean();
+            break;
         case 'help':
         case '--help':
         case '-h':
@@ -40,9 +43,22 @@ Cách dùng:
 Các lệnh:
   init      Cài đặt bộ khung .ai vào dự án (Mặc định)
             Options: --force, -f  Ghi đè nếu đã tồn tại
-  sync      Đồng bộ cấu hình từ .ai sang các IDE (Cursor, Claude, ...)
+
+  sync      [ide] [--delete] [--clean]
+            Đồng bộ cấu hình từ .ai sang các IDE.
+            Script sẽ tự động nhận diện IDE qua terminal hoặc thư mục dự án.
+            Các IDE hỗ trợ: jetbrains, cursor, vscode, claude, xcode, antigravity.
+            Options:
+              --delete, -d  Xóa thư mục .ai sau khi đồng bộ xong
+              --clean, -c   Xóa thư mục .ai_backups sau khi đồng bộ xong
+
   backup    Tạo bản sao lưu cho cấu hình AI hiện tại
+  clean     Dọn dẹp các thư mục AI generated (.ai_backups, INITIAL_SESSION.md...)
   help      Hiển thị hướng dẫn này
+
+Ví dụ:
+  npx minhck-dot-ai sync jetbrains
+  npx minhck-dot-ai sync cursor --delete
     `);
 }
 
@@ -58,6 +74,11 @@ async function install(force) {
 
     try {
         await fs.copy(sourceDir, destDir, { overwrite: true });
+        // Đảm bảo script có quyền thực thi
+        const syncScript = path.join(destDir, 'sync-to-agent.sh');
+        if (fs.existsSync(syncScript)) {
+            fs.chmodSync(syncScript, '755');
+        }
         console.log(force ? '🔄 Đã cập nhật (ghi đè) .ai thành công!' : '✅ Đã cài đặt .ai thành công!');
         await updateGitignore();
         console.log('👉 Bắt đầu tại: .ai/INITIAL_SESSION.md');
@@ -74,11 +95,15 @@ async function sync() {
         return;
     }
 
+    // Lấy tất cả tham số truyền vào từ command sync: npx minhck-dot-ai sync [args...]
+    const syncArgs = process.argv.slice(3);
+    
     try {
-        console.log('🔄 Đang bắt đầu đồng bộ...');
-        execSync(`bash "${syncScript}"`, { stdio: 'inherit' });
+        console.log(`🔄 Đang bắt đầu đồng bộ...`);
+        // Truyền các tham số trực tiếp cho bash script xử lý
+        execSync(`bash "${syncScript}" ${syncArgs.join(' ')}`, { stdio: 'inherit' });
     } catch (err) {
-        console.error('❌ Lỗi khi đồng bộ:', err.message);
+        // Lỗi thường đã được in ra bởi stdio: inherit, ở đây chỉ catch để không crash
     }
 }
 
@@ -97,6 +122,44 @@ async function backup() {
         }
     } catch (err) {
         console.error('❌ Lỗi khi sao lưu:', err);
+    }
+}
+
+async function clean() {
+    const foldersToClean = [
+        '.ai_backups',
+        'INITIAL_SESSION.md',
+        '.agent',
+        '.cursor',
+        '.claude',
+        '.claude-instructions.md',
+        '.xcoderules',
+        '.ide',
+        '.idea/ai-instructions.md',
+        '.idea/ai-agents',
+        '.idea/CLAUDE.md'
+    ];
+
+    console.log('🧹 Đang dọn dẹp các thư mục AI generated...');
+    
+    let cleanedCount = 0;
+    for (const item of foldersToClean) {
+        const itemPath = path.join(process.cwd(), item);
+        if (fs.existsSync(itemPath)) {
+            try {
+                await fs.remove(itemPath);
+                console.log(`   🗑️ Đã xóa: ${item}`);
+                cleanedCount++;
+            } catch (err) {
+                console.error(`   ❌ Lỗi khi xóa ${item}:`, err.message);
+            }
+        }
+    }
+
+    if (cleanedCount === 0) {
+        console.log('✨ Không tìm thấy thư mục nào cần dọn dẹp.');
+    } else {
+        console.log(`✅ Đã dọn dẹp xong ${cleanedCount} mục!`);
     }
 }
 
