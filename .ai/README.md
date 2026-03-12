@@ -109,7 +109,7 @@ bash .ai/sync-to-agent.sh
     -   **VS Code**: Tổng hợp vào `.github/copilot-instructions.md`
     -   **Claude IDE / Desktop**: Tổng hợp vào `.claude-instructions.md`
     -   **Claude Code (CLI)**: Chuyển vào thư mục `.claude/` (gồm `skills`, `hooks`, `docs` và `CLAUDE.md`)
-    -   **JetBrains IDEs (WebStorm, PyCharm, IntelliJ, Android Studio)**: Chuyển vào thư mục `.ai-agents/` (để đảm bảo hiển thị trong menu Project) và đồng bộ một bản copy vào `.idea/` để tương thích với các plugin.
+    -   **JetBrains IDEs (WebStorm, PyCharm, IntelliJ, Android Studio)**: Chuyển trực tiếp vào thư mục `.idea/ai-agents/` và đồng bộ file `.idea/ai-instructions.md` để các plugin AI có thể nhận diện ngay trong IDE.
     -   **Xcode**: Tổng hợp vào `.xcoderules`
 3.  **File `INITIAL_SESSION.md`** sẽ được đưa ra thư mục gốc để bạn dễ dàng bắt đầu phiên làm việc.
 
@@ -119,7 +119,7 @@ Tùy thuộc vào khả năng của từng IDE, hệ thống sẽ tự động c
 
 | Loại IDE | Cấu trúc sau khi Sync | Đặc điểm |
 | :--- | :--- | :--- |
-| **Folder-based** (Antigravity, Cursor, Claude Code, JetBrains) | Có thư mục con (`skills/`, `docs/`, `agents/`, `hooks/`) | Giữ nguyên sự ngăn nắp của Framework. AI dễ dàng tìm kiếm context theo phân loại. (Với JetBrains dùng `.ai-agents/`) |
+| **Folder-based** (Antigravity, Cursor, Claude Code, JetBrains) | Có thư mục con (`skills/`, `docs/`, `agents/`, `hooks/`) | Giữ nguyên sự ngăn nắp của Framework. AI dễ dàng tìm kiếm context theo phân loại. (Với JetBrains dùng `.idea/ai-agents/`) |
 | **File-based** (Copilot, JetBrains, Xcode, Claude Desktop) | Đóng gói tất cả vào 1 file instructions duy nhất | Tối ưu cho các công cụ chỉ hỗ trợ một file rules tổng hợp. |
 
 ---

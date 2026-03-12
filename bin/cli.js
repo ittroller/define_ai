@@ -135,7 +135,6 @@ async function clean() {
         '.claude-instructions.md',
         '.xcoderules',
         '.ide',
-        '.ai-agents',
         '.idea/ai-instructions.md',
         '.idea/ai-agents',
         '.idea/CLAUDE.md',
