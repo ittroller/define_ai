@@ -137,7 +137,14 @@ async function clean() {
         '.ide',
         '.idea/ai-instructions.md',
         '.idea/ai-agents',
-        '.idea/CLAUDE.md'
+        '.idea/CLAUDE.md',
+        '.continue',
+        '.pearai',
+        '.zed',
+        '.aider.instructions.md',
+        '.clinerules',
+        '.traerules',
+        '.windsurfrules'
     ];
 
     console.log('🧹 Đang dọn dẹp các thư mục AI generated...');

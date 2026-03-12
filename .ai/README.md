@@ -106,18 +106,11 @@ bash .ai/sync-to-agent.sh
 3.  **Toàn bộ cấu hình (Agents, Specifications, Knowledge, Memory, Prompts) sẽ được chuyển vào các thư mục tương ứng:**
     -   **Antigravity**: Chuyển vào `.agent/` (Đầy đủ thư mục)
     -   **Cursor**: Chuyển vào `.cursor/rules/` & `.cursor/hooks/`
-    -   **Windsurf**: Tổng hợp vào `.windsurfrules`
-    -   **Roo Code / Cline**: Tổng hợp vào `.clinerules`
-    -   **PearAI**: Chuyển vào `.pearai/rules/`
-    -   **Trae**: Tổng hợp vào `.traerules`
     -   **VS Code**: Tổng hợp vào `.github/copilot-instructions.md`
     -   **Claude IDE / Desktop**: Tổng hợp vào `.claude-instructions.md`
     -   **Claude Code (CLI)**: Chuyển vào thư mục `.claude/` (gồm `skills`, `hooks`, `docs` và `CLAUDE.md`)
     -   **JetBrains IDEs (WebStorm, PyCharm, IntelliJ, Android Studio)**: Tổng hợp vào `.idea/ai-instructions.md` và tạo cấu trúc thư mục tại `.idea/ai-agents/`
     -   **Xcode**: Tổng hợp vào `.xcoderules`
-    -   **Zed**: Tổng hợp vào `.zed/instructions.md`
-    -   **Aider (CLI)**: Tổng hợp vào `.aider.instructions.md`
-    -   **Continue**: Chuyển vào `.continue/rules/`
 3.  **File `INITIAL_SESSION.md`** sẽ được đưa ra thư mục gốc để bạn dễ dàng bắt đầu phiên làm việc.
 
 ### 📊 So sánh cơ chế đồng bộ (Sync Strategy)
@@ -126,8 +119,8 @@ Tùy thuộc vào khả năng của từng IDE, hệ thống sẽ tự động c
 
 | Loại IDE | Cấu trúc sau khi Sync | Đặc điểm |
 | :--- | :--- | :--- |
-| **Folder-based** (Antigravity, Cursor, Claude Code, PearAI, Continue, JetBrains) | Có thư mục con (`skills/`, `docs/`, `agents/`, `hooks/`) | Giữ nguyên sự ngăn nắp của Framework. AI dễ dàng tìm kiếm context theo phân loại. |
-| **File-based** (Windsurf, Roo Code, Trae, Copilot, Zed, JetBrains, Xcode) | Đóng gói tất cả vào 1 file instructions duy nhất | Tối ưu cho các công cụ chỉ hỗ trợ một file rules tổng hợp. Đảm bảo AI luôn mang theo toàn bộ tri thức trong một file. |
+| **Folder-based** (Antigravity, Cursor, Claude Code, JetBrains) | Có thư mục con (`skills/`, `docs/`, `agents/`, `hooks/`) | Giữ nguyên sự ngăn nắp của Framework. AI dễ dàng tìm kiếm context theo phân loại. |
+| **File-based** (Copilot, JetBrains, Xcode, Claude Desktop) | Đóng gói tất cả vào 1 file instructions duy nhất | Tối ưu cho các công cụ chỉ hỗ trợ một file rules tổng hợp. Đảm bảo AI luôn mang theo toàn bộ tri thức trong một file. |
 
 ---
 
