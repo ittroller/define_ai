@@ -21,8 +21,9 @@ TARGETS=(
     ".agent" ".cursor/rules" ".windsurfrules" ".clinerules" 
     ".pearai/rules" ".traerules" ".github/copilot-instructions.md" 
     ".claude-instructions.md" ".claude/" ".idea/ai-instructions.md" 
-    ".zed/instructions.md" ".aider.instructions.md" ".continue/rules"
-    "./INITIAL_SESSION.md" ".ai_skills/" ".ai_hooks/" ".ai_docs/"
+    ".idea/ai-agents/" ".zed/instructions.md" ".aider.instructions.md" 
+    ".continue/rules" "./INITIAL_SESSION.md" ".ai_skills/" 
+    ".ai_hooks/" ".ai_docs/" ".xcoderules"
 )
 
 FOUND_OLD=false
@@ -144,10 +145,14 @@ echo -e "\n\n# Project Specifications\n" >> .traerules
 [ -d ".ai/specifications" ] && cat .ai/specifications/*.md >> .traerules
 echo -e "\n\n# Project Knowledge\n" >> .traerules
 [ -d ".ai/knowledge" ] && cat .ai/knowledge/*.md >> .traerules
+echo -e "\n\n# Project Memory\n" >> .traerules
+[ -d ".ai/memory" ] && cat .ai/memory/*.md >> .traerules
 echo -e "\n\n# Project Skills\n" >> .traerules
 [ -d ".ai/skills" ] && cat .ai/skills/*.md >> .traerules
 echo -e "\n\n# Project Documentation\n" >> .traerules
 [ -d ".ai/docs" ] && grep -r "" .ai/docs | grep ".md" | xargs cat >> .traerules 2>/dev/null
+echo -e "\n\n# Project Hooks (Guardrails)\n" >> .traerules
+[ -d ".ai/hooks" ] && cat .ai/hooks/*.md 2>/dev/null >> .traerules
 
 # --- 7. VS Code / Copilot (.github/copilot-instructions.md) ---
 echo "📂 Đồng bộ cho VS Code / Copilot (.github/copilot-instructions.md)..."
@@ -156,10 +161,16 @@ true > .github/copilot-instructions.md
 [ -d ".ai/agents" ] && cat .ai/agents/*.md >> .github/copilot-instructions.md
 echo -e "\n\n# Project Specifications\n" >> .github/copilot-instructions.md
 [ -d ".ai/specifications" ] && cat .ai/specifications/*.md >> .github/copilot-instructions.md
+echo -e "\n\n# Project Knowledge\n" >> .github/copilot-instructions.md
+[ -d ".ai/knowledge" ] && cat .ai/knowledge/*.md >> .github/copilot-instructions.md
+echo -e "\n\n# Project Memory\n" >> .github/copilot-instructions.md
+[ -d ".ai/memory" ] && cat .ai/memory/*.md >> .github/copilot-instructions.md
 echo -e "\n\n# Project Skills\n" >> .github/copilot-instructions.md
 [ -d ".ai/skills" ] && cat .ai/skills/*.md >> .github/copilot-instructions.md
 echo -e "\n\n# Project Documentation\n" >> .github/copilot-instructions.md
 [ -d ".ai/docs" ] && grep -r "" .ai/docs | grep ".md" | xargs cat >> .github/copilot-instructions.md 2>/dev/null
+echo -e "\n\n# Project Hooks (Guardrails)\n" >> .github/copilot-instructions.md
+[ -d ".ai/hooks" ] && cat .ai/hooks/*.md 2>/dev/null >> .github/copilot-instructions.md
 
 # --- 8. Claude IDE / Desktop & Claude Code CLI (.claude/) ---
 echo "📂 Đồng bộ cho Claude IDE / Desktop & Claude Code CLI..."
@@ -179,17 +190,34 @@ mkdir -p .claude/skills .claude/hooks .claude/docs
 [ -d ".ai/docs" ] && rsync -av --delete .ai/docs/ .claude/docs/
 [ -f ".claude-instructions.md" ] && cp .claude-instructions.md .claude/CLAUDE.md
 
-# --- 9. JetBrains / WebStorm (.idea/ai-instructions.md) ---
-echo "📂 Đồng bộ cho JetBrains / WebStorm (.idea/ai-instructions.md)..."
-mkdir -p .idea
+# --- 9. JetBrains IDEs (WebStorm, PyCharm, IntelliJ...) ---
+echo "📂 Đồng bộ cho JetBrains IDEs (.idea/ai-instructions.md)..."
+mkdir -p .idea/ai-agents
 true > .idea/ai-instructions.md
+
+# 9.1 Đồng bộ file instructions tổng hợp
 [ -d ".ai/agents" ] && cat .ai/agents/*.md >> .idea/ai-instructions.md
-echo -e "\n\n# Project Specifications\n" >> .idea/ai-instructions.md
-[ -d ".ai/specifications" ] && cat .ai/specifications/*.md >> .idea/ai-instructions.md
 echo -e "\n\n# Project Skills\n" >> .idea/ai-instructions.md
 [ -d ".ai/skills" ] && cat .ai/skills/*.md >> .idea/ai-instructions.md
+echo -e "\n\n# Project Specifications\n" >> .idea/ai-instructions.md
+[ -d ".ai/specifications" ] && cat .ai/specifications/*.md >> .idea/ai-instructions.md
+echo -e "\n\n# Project Knowledge\n" >> .idea/ai-instructions.md
+[ -d ".ai/knowledge" ] && cat .ai/knowledge/*.md >> .idea/ai-instructions.md
+echo -e "\n\n# Project Memory\n" >> .idea/ai-instructions.md
+[ -d ".ai/memory" ] && cat .ai/memory/*.md >> .idea/ai-instructions.md
 echo -e "\n\n# Project Documentation\n" >> .idea/ai-instructions.md
 [ -d ".ai/docs" ] && grep -r "" .ai/docs | grep ".md" | xargs cat >> .idea/ai-instructions.md 2>/dev/null
+echo -e "\n\n# Project Hooks (Guardrails)\n" >> .idea/ai-instructions.md
+[ -d ".ai/hooks" ] && cat .ai/hooks/*.md 2>/dev/null >> .idea/ai-instructions.md
+
+# 9.2 Đồng bộ cấu trúc thư mục (Cho các plugin hỗ trợ folder-based rules)
+[ -d ".ai/agents" ] && rsync -av --delete .ai/agents/ .idea/ai-agents/rules/
+[ -d ".ai/specifications" ] && rsync -av --delete .ai/specifications/ .idea/ai-agents/specifications/
+[ -d ".ai/knowledge" ] && rsync -av --delete .ai/knowledge/ .idea/ai-agents/knowledge/
+[ -d ".ai/memory" ] && rsync -av --delete .ai/memory/ .idea/ai-agents/memory/
+[ -d ".ai/skills" ] && rsync -av --delete .ai/skills/ .idea/ai-agents/skills/
+[ -d ".ai/docs" ] && rsync -av --delete .ai/docs/ .idea/ai-agents/docs/
+[ -d ".ai/hooks" ] && rsync -av --delete .ai/hooks/ .idea/ai-agents/hooks/
 
 # --- 10. Zed (.zed/instructions.md) ---
 echo "📂 Đồng bộ cho Zed (.zed/instructions.md)..."
@@ -200,10 +228,14 @@ echo -e "\n\n# Project Specifications\n" >> .zed/instructions.md
 [ -d ".ai/specifications" ] && cat .ai/specifications/*.md >> .zed/instructions.md
 echo -e "\n\n# Project Knowledge\n" >> .zed/instructions.md
 [ -d ".ai/knowledge" ] && cat .ai/knowledge/*.md >> .zed/instructions.md
+echo -e "\n\n# Project Memory\n" >> .zed/instructions.md
+[ -d ".ai/memory" ] && cat .ai/memory/*.md >> .zed/instructions.md
 echo -e "\n\n# Project Skills\n" >> .zed/instructions.md
 [ -d ".ai/skills" ] && cat .ai/skills/*.md >> .zed/instructions.md
 echo -e "\n\n# Project Documentation\n" >> .zed/instructions.md
 [ -d ".ai/docs" ] && grep -r "" .ai/docs | grep ".md" | xargs cat >> .zed/instructions.md 2>/dev/null
+echo -e "\n\n# Project Hooks (Guardrails)\n" >> .zed/instructions.md
+[ -d ".ai/hooks" ] && cat .ai/hooks/*.md 2>/dev/null >> .zed/instructions.md
 
 # --- 11. Aider (.aider.instructions.md) ---
 echo "📂 Đồng bộ cho Aider (.aider.instructions.md)..."
@@ -213,10 +245,14 @@ echo -e "\n\n# Project Specifications\n" >> .aider.instructions.md
 [ -d ".ai/specifications" ] && cat .ai/specifications/*.md >> .aider.instructions.md
 echo -e "\n\n# Project Knowledge\n" >> .aider.instructions.md
 [ -d ".ai/knowledge" ] && cat .ai/knowledge/*.md >> .aider.instructions.md
+echo -e "\n\n# Project Memory\n" >> .aider.instructions.md
+[ -d ".ai/memory" ] && cat .ai/memory/*.md >> .aider.instructions.md
 echo -e "\n\n# Project Skills\n" >> .aider.instructions.md
 [ -d ".ai/skills" ] && cat .ai/skills/*.md >> .aider.instructions.md
 echo -e "\n\n# Project Documentation\n" >> .aider.instructions.md
 [ -d ".ai/docs" ] && grep -r "" .ai/docs | grep ".md" | xargs cat >> .aider.instructions.md 2>/dev/null
+echo -e "\n\n# Project Hooks (Guardrails)\n" >> .aider.instructions.md
+[ -d ".ai/hooks" ] && cat .ai/hooks/*.md 2>/dev/null >> .aider.instructions.md
 
 # --- 12. Continue (.continue/rules) ---
 echo "📂 Đồng bộ cho Continue (.continue/rules/)..."
@@ -226,6 +262,23 @@ mkdir -p .continue/rules/agents .continue/rules/specifications .continue/rules/k
 [ -d ".ai/knowledge" ] && rsync -av --delete .ai/knowledge/ .continue/rules/knowledge/
 [ -d ".ai/skills" ] && rsync -av --delete .ai/skills/ .continue/rules/skills/
 [ -d ".ai/docs" ] && rsync -av --delete .ai/docs/ .continue/rules/docs/
+
+# --- 13. Xcode (.xcoderules) ---
+echo "📂 Đồng bộ cho Xcode (.xcoderules)..."
+true > .xcoderules
+[ -d ".ai/agents" ] && cat .ai/agents/*.md >> .xcoderules
+echo -e "\n\n# Project Specifications\n" >> .xcoderules
+[ -d ".ai/specifications" ] && cat .ai/specifications/*.md >> .xcoderules
+echo -e "\n\n# Project Knowledge\n" >> .xcoderules
+[ -d ".ai/knowledge" ] && cat .ai/knowledge/*.md >> .xcoderules
+echo -e "\n\n# Project Memory\n" >> .xcoderules
+[ -d ".ai/memory" ] && cat .ai/memory/*.md >> .xcoderules
+echo -e "\n\n# Project Skills\n" >> .xcoderules
+[ -d ".ai/skills" ] && cat .ai/skills/*.md >> .xcoderules
+echo -e "\n\n# Project Documentation\n" >> .xcoderules
+[ -d ".ai/docs" ] && grep -r "" .ai/docs | grep ".md" | xargs cat >> .xcoderules 2>/dev/null
+echo -e "\n\n# Project Hooks (Guardrails)\n" >> .xcoderules
+[ -d ".ai/hooks" ] && cat .ai/hooks/*.md 2>/dev/null >> .xcoderules
 
 # Di chuyển INITIAL_SESSION.md ra ngoài root để dễ truy cập
 if [ -f ".ai/INITIAL_SESSION.md" ]; then
@@ -243,10 +296,11 @@ echo "📍 PearAI:      .pearai/rules/"
 echo "📍 Trae:        .traerules"
 echo "📍 VS Code:     .github/copilot-instructions.md"
 echo "📍 Claude IDE:  .claude-instructions.md & .claude/"
-echo "📍 WebStorm:    .idea/ai-instructions.md"
+echo "📍 JetBrains:   .idea/ai-instructions.md & .idea/ai-agents/"
 echo "📍 Zed:         .zed/instructions.md"
 echo "📍 Aider (CLI): .aider.instructions.md"
 echo "📍 Continue:    .continue/rules/"
+echo "📍 Xcode:       .xcoderules"
 echo "📍 Khởi tạo:    ./INITIAL_SESSION.md"
 echo "------------------------------------------------"
 

@@ -4,7 +4,7 @@
 
 ---
 
-Hệ thống này được thiết kế để hoạt động trên mọi IDE (Cursor, VSCode, WebStorm, Antigravity) bằng cách sử dụng các file cấu hình Markdown tiêu chuẩn.
+Hệ thống này được thiết kế để hoạt động trên mọi IDE (Cursor, VSCode, JetBrains IDEs - WebStorm, PyCharm, IntelliJ, Xcode, Antigravity) bằng cách sử dụng các file cấu hình Markdown tiêu chuẩn.
 
 ## 🚀 Hướng dẫn Quick Start cho IDE mới (VS Code, Cursor, ...)
 
@@ -113,7 +113,8 @@ bash .ai/sync-to-agent.sh
     -   **VS Code**: Tổng hợp vào `.github/copilot-instructions.md`
     -   **Claude IDE / Desktop**: Tổng hợp vào `.claude-instructions.md`
     -   **Claude Code (CLI)**: Chuyển vào thư mục `.claude/` (gồm `skills`, `hooks`, `docs` và `CLAUDE.md`)
-    -   **WebStorm / JetBrains**: Tổng hợp vào `.idea/ai-instructions.md`
+    -   **JetBrains IDEs (WebStorm, PyCharm, IntelliJ, Android Studio)**: Tổng hợp vào `.idea/ai-instructions.md` và tạo cấu trúc thư mục tại `.idea/ai-agents/`
+    -   **Xcode**: Tổng hợp vào `.xcoderules`
     -   **Zed**: Tổng hợp vào `.zed/instructions.md`
     -   **Aider (CLI)**: Tổng hợp vào `.aider.instructions.md`
     -   **Continue**: Chuyển vào `.continue/rules/`
@@ -125,14 +126,14 @@ Tùy thuộc vào khả năng của từng IDE, hệ thống sẽ tự động c
 
 | Loại IDE | Cấu trúc sau khi Sync | Đặc điểm |
 | :--- | :--- | :--- |
-| **Folder-based** (Antigravity, Cursor, Claude Code, PearAI, Continue) | Có thư mục con (`skills/`, `docs/`, `agents/`, `hooks/`) | Giữ nguyên sự ngăn nắp của Framework. AI dễ dàng tìm kiếm context theo phân loại. |
-| **File-based** (Windsurf, Roo Code, Trae, Copilot, Zed, JetBrains) | Đóng gói tất cả vào 1 file instructions duy nhất | Tối ưu cho các công cụ chỉ hỗ trợ một file rules tổng hợp. Đảm bảo AI luôn mang theo toàn bộ tri thức trong một file. |
+| **Folder-based** (Antigravity, Cursor, Claude Code, PearAI, Continue, JetBrains) | Có thư mục con (`skills/`, `docs/`, `agents/`, `hooks/`) | Giữ nguyên sự ngăn nắp của Framework. AI dễ dàng tìm kiếm context theo phân loại. |
+| **File-based** (Windsurf, Roo Code, Trae, Copilot, Zed, JetBrains, Xcode) | Đóng gói tất cả vào 1 file instructions duy nhất | Tối ưu cho các công cụ chỉ hỗ trợ một file rules tổng hợp. Đảm bảo AI luôn mang theo toàn bộ tri thức trong một file. |
 
 ---
 
 ## 🛠️ Hỗ trợ các IDE khác & Neovim
 - **Neovim (Avante.nvim / CodeCompanion)**: Các plugin này thường tự động nhận diện file `.cursorrules` hoặc `.clinerules` đã được tạo trong quá trình đồng bộ.
-- **Android Studio**: Sử dụng chung cấu hình với WebStorm (`.idea/ai-instructions.md`).
+- **Android Studio / PyCharm / IntelliJ**: Sử dụng chung cấu hình với WebStorm (`.idea/ai-instructions.md`).
 - **Visual Studio**: Bạn có thể tham chiếu trực tiếp đến các file trong thư mục `.agent/` sau khi đồng bộ.
 
 ---
@@ -164,7 +165,7 @@ Thay vì yêu cầu AI tự đoán, hãy cung cấp context đúng:
 
 ## Cách tích hợp vào IDE
 - **Cursor/VSCode**: Mở thư mục này và chỉ định AI đọc các file trong `.ai/agents` làm Rule/Instruction.
-- **WebStorm/Antigravity**: Sử dụng plugin hỗ trợ AI và trỏ context vào thư mục `.ai`.
+- **WebStorm/PyCharm/IntelliJ/Xcode/Antigravity**: Sử dụng plugin hỗ trợ AI và trỏ context vào thư mục `.ai` hoặc file rules tương ứng.
 
 ---
 
