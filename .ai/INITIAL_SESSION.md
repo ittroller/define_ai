@@ -8,22 +8,26 @@ Sử dụng nội dung dưới đây để gửi cho AI mỗi khi bắt đầu m
 
 "Chào bạn, tôi muốn bắt đầu một phiên làm việc mới cho dự án này. 
 
-Nếu bạn hỗ trợ tính năng reference file (như @ hoặc #), hãy ưu tiên quét toàn bộ thư mục cấu hình AI của dự án (như `.ai/`, `.agent/`, `.cursor/rules/` hoặc `.claude/` tùy theo IDE đang dùng) trước khi trả lời.
+Nếu bạn hỗ trợ tính năng reference file (như @ hoặc #), hãy ưu tiên quét toàn bộ thư mục cấu hình AI của dự án (như `.cursor/rules/`, `.idea/ai-agents/`, `.clinerules`, `.codex/` hoặc `.ai/` tùy theo IDE đang dùng) trước khi trả lời.
 
 Trước khi thực hiện bất kỳ yêu cầu nào, hãy thực hiện các bước chuẩn bị sau:
 
 1. **Đọc Hệ thống Agent & Kỹ năng**: Truy cập thư mục `agents/` và `skills/` (trong thư mục cấu hình AI) để nắm rõ các vai trò và các kỹ năng chuyên sâu của mình.
-2. **Nắm bắt Quy chuẩn, Quy trình & Tài liệu**: 
+2. **Kích hoạt Superpowers (Siêu năng lực)**: Đọc thư mục `superpowers/` và cấu hình `mcp/mcp.json`. Tôi có quyền truy cập vào các MCP Server:
+   - **Context7**: Dùng để tra cứu tài liệu, search giải pháp thực tế khi tôi cần thêm kiến thức.
+   - **Superpowers (MCP)**: Dùng để thực hiện các workflow chuẩn như TDD, Advanced Debugging.
+   Tôi sẽ chủ động sử dụng các công cụ này trong quá trình hỗ trợ người dùng, đặc biệt là khi đóng vai các Agent (@) hoặc thực hiện Workflow (/). Nếu tôi chưa có quyền truy cập tool, hãy hướng dẫn người dùng cài đặt chúng dựa trên file `.ai/superpowers/IDE_SETUP.md`.
+3. **Nắm bắt Quy chuẩn, Quy trình & Tài liệu**: 
    - Đọc file `coding-standards.md`.
    - **Tham khảo thư mục `workflows/`**: Tuân thủ thứ tự thực hiện (01, 02...).
    - **Đọc thư mục `docs/`**: Hiểu kiến trúc hệ thống (`architecture/`) và hướng dẫn vận hành (`runbooks/`).
-3. **Kiểm tra Tech Stack & Nghiệp vụ**: 
+4. **Kiểm tra Tech Stack & Nghiệp vụ**: 
    - Xem file `tech-stack.md`.
    - Xem file `business-logic.md` để nắm luồng nghiệp vụ.
-4. **Định vị Dự án & Trí nhớ**: 
+5. **Định vị Dự án & Trí nhớ**: 
    - Sử dụng file `project-map.md` để hiểu cấu trúc.
    - Đọc file `adr.md` hoặc thư mục `docs/decisions/` để nắm lịch sử quyết định.
-5. **Kích hoạt Guardrails**: Kiểm tra thư mục `hooks/`. Trước khi hoàn tất tác vụ, hãy tự động chạy các script kiểm tra nếu có (ví dụ `pre-finish-check.sh`).
+6. **Kích hoạt Guardrails**: Kiểm tra thư mục `hooks/`. Trước khi hoàn tất tác vụ, hãy tự động chạy các script kiểm tra nếu có (ví dụ `pre-finish-check.sh`).
 
 **QUY TẮC QUAN TRỌNG NHẤT:** 
 Đối với mọi yêu cầu thay đổi code hoặc thực hiện tác vụ phức tạp, bạn **BẮT BUỘC** phải:
