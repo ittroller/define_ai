@@ -47,7 +47,7 @@ Các lệnh:
   sync      [ide] [--keep] [--clean]
             Đồng bộ cấu hình từ .ai sang các IDE.
             Script sẽ tự động nhận diện IDE qua terminal hoặc thư mục dự án.
-            Các IDE hỗ trợ: jetbrains, cursor, vscode, claude, xcode, antigravity.
+            Các IDE hỗ trợ: jetbrains, cursor, vscode, claude, xcode, antigravity, codex, all.
             Options:
               --keep, -k    Giữ lại thư mục .ai sau khi đồng bộ (Mặc định là xóa)
               --clean, -c   Xóa thư mục .ai_backups sau khi đồng bộ xong
@@ -59,6 +59,7 @@ Các lệnh:
 Ví dụ:
   npx minhck-dot-ai sync jetbrains
   npx minhck-dot-ai sync cursor --keep
+  npx minhck-dot-ai sync codex
     `);
 }
 
@@ -144,7 +145,8 @@ async function clean() {
         '.aider.instructions.md',
         '.clinerules',
         '.traerules',
-        '.windsurfrules'
+        '.windsurfrules',
+        '.codex'
     ];
 
     console.log('🧹 Đang dọn dẹp các thư mục AI generated...');

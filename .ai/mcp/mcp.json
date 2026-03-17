@@ -8,6 +8,13 @@
         "--api-key",
         "YOUR_UPSTASH_CONTEXT7_API_KEY"
       ]
+    },
+    "superpowers": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "superpowers-mcp"
+      ]
     }
   }
 }

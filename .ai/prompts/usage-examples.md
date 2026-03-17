@@ -1,71 +1,83 @@
-# 💡 Mẫu câu lệnh (Usage Examples) sau khi Sync
+# 🚀 Ví dụ thực tế sử dụng Superpowers (Context7 & MCP)
 
-Tài liệu này cung cấp các ví dụ thực tế về cách ra lệnh cho AI trong các IDE khác nhau sau khi bạn đã chạy lệnh `sync-to-agent.sh`.
-
----
-
-## 🚀 1. Khởi tạo phiên làm việc (Session Start)
-**Mục tiêu**: Nạp toàn bộ "não bộ" của Framework vào AI ngay khi mở dự án.
-
-- **Mọi IDE**: Mở file `INITIAL_SESSION.md`, copy nội dung và dán vào ô chat.
-- **Cursor**: `@[INITIAL_SESSION.md] hãy đọc file này và nạp context.`
-- **Claude Code**: `/read INITIAL_SESSION.md` sau đó yêu cầu nó làm theo các bước trong đó.
+Dưới đây là các kịch bản cụ thể để bạn tận dụng tối đa "Siêu năng lực" của AI ngay trong quá trình viết code.
 
 ---
 
-## 🏗️ 2. Phát triển Tính năng mới (New Feature)
-**Mục tiêu**: Sử dụng quy trình chuẩn để tạo tính năng.
+## 1. 🔍 Tra cứu tài liệu (Context7)
+Thay vì thoát ra trình duyệt để search, hãy yêu cầu AI search ngay trong chat.
 
-- **Câu lệnh mẫu**: `Dựa trên @05-feature-dev.md, hãy thiết kế module Auth với JWT theo phong cách NestJS.`
-- **Phân tích UI**: `Hãy phân tích UI Figma tại link này [link figma] và triệu hồi @ui-analyst.md để bóc tách các components cần thiết.`
-- **Code Backend**: `Triệu hồi @backend-node-dev.md, hãy tạo một API GET /users để lấy danh sách người dùng, sử dụng Prisma.`
+**Kịch bản**: Bạn muốn dùng thư viện `Zod` để validate dữ liệu nhưng quên mất cú pháp `discriminatedUnion`.
 
----
-
-## 🐞 3. Sửa lỗi & Debug (Bug Fixing & Debugging)
-**Mục tiêu**: Sử dụng Agent chuyên gia để tìm và sửa bug.
-
-- **Phân tích lỗi**: `Tôi đang gặp lỗi [mô tả lỗi]. Triệu hồi @reviewer.md hãy phân tích file [tên file] và tìm nguyên nhân.`
-- **Theo Workflow**: `Hãy chạy workflow @04-bug-fixing.md để xử lý lỗi crash khi nhấn nút Đăng ký.`
-- **Trace log**: `Dựa trên lỗi log này [copy log vào đây], hãy tìm file nào gây ra lỗi và đề xuất cách sửa.`
+- **Câu lệnh**: `@backend-node-dev dùng context7 search "zod discriminatedUnion example" và viết cho tôi schema validate cho User với role là ADMIN hoặc USER.`
+- **Kết quả**: AI sẽ dùng `context7` để lấy doc mới nhất và viết code chính xác, tránh dùng code cũ lỗi thời.
 
 ---
 
-## ♻️ 4. Refactor & Tối ưu (Refactoring & Optimization)
-**Mục tiêu**: Nâng cao chất lượng code và hiệu năng.
+## 2. 🧪 Viết code theo chuẩn TDD (Superpowers MCP)
+Sử dụng workflow TDD để đảm bảo code chạy đúng ngay từ đầu.
 
-- **Tối ưu SQL**: `Triệu hồi @performance-expert.md, hãy tối ưu truy vấn SQL trong hàm getOrders này.`
-- **Refactor chuẩn**: `Dựa trên @coding-standards.md, hãy refactor file [tên file] để code sạch và dễ bảo trì hơn.`
-- **Check SOLID**: `Hãy kiểm tra file [tên file] có vi phạm nguyên tắc SOLID nào không và sửa lại giúp tôi.`
+**Kịch bản**: Bạn cần viết hàm tính tổng tiền giỏ hàng (Cart) có tính thuế và giảm giá.
 
----
-
-## 🧪 5. Viết Test (Testing)
-**Mục tiêu**: Đảm bảo code chạy đúng và không bị regression.
-
-- **Unit Test**: `Triệu hồi @tester.md, hãy viết Unit Test cho hàm calculatePrice, đảm bảo độ bao phủ (coverage) 100%.`
-- **E2E Test**: `Hãy tạo script E2E test cho luồng thanh toán bằng Playwright dựa trên @docs/flows/checkout.md.`
-- **Run Test**: `Hãy chạy test module Auth và báo cáo kết quả cho tôi.`
+- **Câu lệnh**: `/tdd-workflow viết hàm calculateTotal cho Cart. Yêu cầu: Viết unit test trước bằng Vitest, sau đó mới viết logic hàm.`
+- **Kết quả**: AI sẽ dùng tool `superpowers` kích hoạt workflow TDD:
+  1. Tạo file test `cart.spec.ts`.
+  2. Chạy test (thất bại).
+  3. Viết code trong `cart.ts`.
+  4. Chạy test lại (thành công).
 
 ---
 
-## 📚 6. Viết Tài liệu (Documentation)
-**Mục tiêu**: Giúp dự án dễ hiểu và dễ bảo trì.
+## 3. 🐞 Debug lỗi "khó nhằn" (Advanced Debugging)
+Khi gặp lỗi logic hoặc lỗi mờ ám (như race condition, memory leak).
 
-- **README**: `Hãy viết tài liệu README.md cho module này, bao gồm cách cài đặt và sử dụng.`
-- **Project Map**: `Hãy cập nhật file @project-map.md dựa trên cấu trúc thư mục hiện tại.`
-- **ADR Summary**: `Hãy tóm tắt lịch sử quyết định trong dự án dựa trên thư mục @memory/adr/.`
+**Kịch bản**: API trả về 500 nhưng log không rõ ràng.
+
+- **Câu lệnh**: `@reviewer hãy dùng superpowers advanced-debug để phân tích lỗi 500 tại endpoint /api/payment. Đây là log lỗi hiện tại: [dán log vào]`
+- **Kết quả**: AI sẽ thực hiện quy trình 5 bước:
+  1. Tái hiện lỗi.
+  2. Thu thập thêm ngữ cảnh (quét các file liên quan).
+  3. Đưa ra các giả thuyết.
+  4. Thử nghiệm giải pháp.
+  5. Kiểm chứng lại.
 
 ---
 
-## 🛡️ 7. Chốt chặn an toàn (Guardrails)
-**Mục tiêu**: Kiểm tra code trước khi hoàn tất.
+## 4. 🏗️ Thiết kế kiến trúc (System Architect + Context7)
+Khi bắt đầu một module mới và muốn tham khảo kiến trúc tốt nhất.
 
-- **Mẫu lệnh**: `Trước khi kết thúc task, hãy chạy @pre-finish-check.sh (hoặc hooks/) để đảm bảo code không lỗi lint và pass toàn bộ test.`
+**Kịch bản**: Cần thiết kế module Real-time Chat dùng Socket.io với NestJS.
+
+- **Câu lệnh**: `@system-architect dùng context7 search "nestjs socket.io best practices 2024" và thiết kế cấu trúc module chat cho dự án này.`
+- **Kết quả**: AI sẽ tìm kiếm các kiến trúc microservices hoặc event-driven mới nhất và đề xuất cấu trúc thư mục phù hợp với dự án hiện tại.
 
 ---
 
-## 💡 Mẹo nhỏ (Pro-tips):
-1.  **Luôn dùng `@`**: Nếu IDE của bạn hỗ trợ (Cursor, PearAI, Continue, WebStorm), hãy luôn dùng `@` để trỏ thẳng vào Agent hoặc Workflow bạn muốn.
-2.  **Lập kế hoạch trước (Plan first)**: Luôn ra lệnh *"Hãy lập kế hoạch (Plan) và trình tôi duyệt trước khi viết code"* để tránh AI làm sai ý.
-3.  **Hỏi Agent**: Nếu không biết dùng Agent nào, hãy hỏi: *"@ai-orchestrator.md hãy phân tích yêu cầu này và chỉ định Agent phù hợp."*
+## 5. ♻️ Refactor code (Reviewer + Superpowers)
+Nâng cấp code cũ lên chuẩn mới.
+
+**Kịch bản**: File `auth.service.ts` quá dài và rối rắm.
+
+- **Câu lệnh**: `@reviewer dùng superpowers refactor file này theo nguyên tắc SOLID và Clean Code. Nhớ dùng context7 check xem có pattern nào mới cho Auth trong Next.js không.`
+- **Kết quả**: AI sẽ phân tách các class, áp dụng Dependency Injection và cập nhật các thư viện auth mới nhất.
+
+---
+
+## 6. 🛡️ Kiểm tra bảo mật (Security Audit)
+**Kịch bản**: Bạn vừa viết xong module xử lý File Upload và muốn đảm bảo nó an toàn.
+- **Câu lệnh**: `@security-expert dùng superpowers security kiểm tra module upload file này. Đặc biệt chú ý đến Path Traversal và SQL Injection.`
+- **Kết quả**: AI sẽ dùng "siêu năng lực" bảo mật để quét qua code và cảnh báo các lỗ hổng tiềm ẩn.
+
+---
+
+## 7. ⚡ Tối ưu hiệu năng (Performance Optimization)
+**Kịch bản**: Hàm xử lý dữ liệu lớn đang chạy chậm.
+- **Câu lệnh**: `@performance-expert dùng superpowers optimize hàm xử lý dữ liệu này để tăng tốc độ thực thi.`
+- **Kết quả**: AI sẽ áp dụng các kỹ thuật như caching, parallel processing (worker threads) hoặc tối ưu thuật toán.
+
+---
+
+## 8. 📅 Lập kế hoạch phức tạp (Task Planning)
+**Kịch bản**: Bạn cần xây dựng một hệ thống Notifications (Email, Push, SMS).
+- **Câu lệnh**: `@system-architect dùng superpowers plan thiết kế và lập kế hoạch triển khai hệ thống thông báo đa kênh.`
+- **Kết quả**: AI sẽ phác thảo kiến trúc và chia nhỏ các giai đoạn thực hiện (Phase 1, 2, 3...) kèm theo các bước chi tiết.

@@ -68,21 +68,16 @@ Dự án này sử dụng cấu hình AI "di động" trong thư mục `.ai`. Đ
 1.  Mở terminal tại thư mục gốc dự án.
 2.  Chạy lệnh: `bash .ai/sync-to-agent.sh`
 3.  **Sao lưu an toàn**: Script sẽ tự động tìm và sao lưu các cấu hình AI hiện có vào thư mục `.ai_backups/` trước khi thực hiện đồng bộ.
-4.  **Thư mục `.ai` sẽ tự động được xóa đi** sau khi đồng bộ thành công vào các thư mục chuẩn của IDE:
+4.  **Thư mục `.ai` sẽ được giữ lại** sau khi đồng bộ để bạn có thể tiếp tục chỉnh sửa cấu hình gốc:
     -   **Antigravity**: `.agent/`
+    -   **Codex**: `.codex/`
     -   **Cursor**: `.cursor/rules/`
-    -   **Windsurf**: `.windsurfrules` (Tổng hợp)
-    -   **Roo Code / Cline**: `.clinerules` (Tổng hợp)
-    -   **PearAI**: `.pearai/rules/`
-    -   **Trae**: `.traerules` (Tổng hợp)
     -   **VS Code / Copilot**: `.github/copilot-instructions.md` (Tổng hợp)
     -   **Claude IDE / Desktop**: `.claude-instructions.md` (Tổng hợp)
-    -   **WebStorm / JetBrains**: `.idea/ai-instructions.md` (Tổng hợp)
-    -   **Zed**: `.zed/instructions.md` (Tổng hợp)
-    -   **Aider (CLI)**: `.aider.instructions.md` (Tổng hợp)
-    -   **Continue**: `.continue/rules/` (Đầy đủ)
-    -   **Neovim**: Tự động nhận diện `.cursorrules` hoặc `.clinerules`.
-4.  **Khởi tạo**: Sau khi đồng bộ, file `INITIAL_SESSION.md` sẽ xuất hiện ở thư mục gốc. Hãy mở nó để bắt đầu phiên chat với AI.
+    -   **WebStorm / JetBrains**: `.idea/ai-agents/` và `.idea/ai-instructions.md` (Tổng hợp)
+    -   **Xcode**: `.xcoderules` (Tổng hợp)
+5.  **Khởi tạo**: Sau khi đồng bộ, file `INITIAL_SESSION.md` sẽ xuất hiện ở thư mục gốc. Hãy mở nó để bắt đầu phiên chat với AI.
+6.  **Ví dụ cụ thể**: Xem thêm các ví dụ thực tế sử dụng Superpowers tại `.ai/prompts/usage-examples.md`.
 
 ---
 
@@ -147,6 +142,33 @@ Dưới đây là một số ví dụ câu lệnh bạn có thể copy và gửi
 - `Hãy viết tài liệu README.md cho module này, bao gồm cách cài đặt và sử dụng.`
 - `Hãy cập nhật file @project-map.md dựa trên cấu trúc thư mục hiện tại.`
 - `Hãy tóm tắt lịch sử quyết định trong dự án dựa trên thư mục @memory/adr/.`
+
+---
+
+---
+
+## 9. ⚡ Kích hoạt Superpowers (Siêu năng lực AI)
+
+Hệ thống của bạn tích hợp framework Superpowers thông qua giao thức MCP (Model Context Protocol).
+
+#### Sự kết hợp giữa `@`, `/` và MCP Tools:
+- **`@` (Reference)**: Dùng để triệu hồi một **Chuyên gia (Agent)**. Khi bạn `@agent-name`, AI sẽ đóng vai chuyên gia đó. **Quan trọng**: Các chuyên gia này đã được huấn luyện để chủ động sử dụng MCP Tools (Context7/Superpowers) khi họ cần thêm thông tin hoặc thực hiện các quy trình chuẩn.
+- **`/` (Slash Commands)**: Dùng để kích hoạt nhanh một **Quy trình (Workflow)**. Nếu quy trình đó yêu cầu tìm kiếm tài liệu hoặc chạy test, AI sẽ tự động gọi MCP tương ứng.
+- **MCP Tools (Superpowers/Context7)**: Đây là **"Cơ bắp" thực thi**. Dù bạn đang dùng Agent nào hay Workflow nào, AI đều có thể lấy các công cụ này ra dùng để bổ trợ cho nhiệm vụ đang làm.
+
+### Hướng dẫn Cài đặt nhanh (Setup):
+Để kích hoạt các công cụ này, bạn cần cấu hình server MCP trong IDE của mình. Xem hướng dẫn chi tiết từng bước cho từng IDE tại:
+👉 **[.ai/superpowers/IDE_SETUP.md](.ai/superpowers/IDE_SETUP.md)**
+
+### Cách sử dụng các công cụ (Tools):
+1.  **Cursor / Claude Desktop / Antigravity / Codex**: Các IDE này sẽ tự động nhận diện các server MCP trong file cấu hình. Bạn chỉ cần yêu cầu AI sử dụng tool.
+    - *Ví dụ*: "Hãy dùng `context7` tìm tài liệu về thư viện Zod."
+    - *Ví dụ*: "Hãy dùng `superpowers` chạy workflow TDD cho tính năng Login."
+2.  **WebStorm / VS Code**: Bạn cần cài đặt các plugin hỗ trợ MCP (như **MCP Client** cho WebStorm, **Roo Code / Cline** cho VS Code) và cấu hình server MCP theo hướng dẫn.
+
+### Các Siêu năng lực sẵn có:
+-   **Context7 (Upstash)**: MCP Server chuyên về **Kiến thức (Knowledge/RAG)**. Tra cứu tài liệu và giải pháp thực tế.
+-   **Superpowers (MCP)**: MCP Server chuyên về **Kỹ năng thực thi (Skills/Actions)**. Bao gồm TDD, Advanced Debugging, và các quy trình code chuẩn.
 
 ---
 
