@@ -44,13 +44,14 @@ Các lệnh:
   init      Cài đặt bộ khung .ai vào dự án (Mặc định)
             Options: --force, -f  Ghi đè nếu đã tồn tại
 
-  sync      [ide] [--keep] [--clean]
+  sync      [ide] [--keep] [--clean] [--backup]
             Đồng bộ cấu hình từ .ai sang các IDE.
             Script sẽ tự động nhận diện IDE qua terminal hoặc thư mục dự án.
-            Các IDE hỗ trợ: jetbrains, cursor, vscode, claude, xcode, antigravity, codex, all.
+            Các IDE hỗ trợ: jetbrains, pycharm, intellij, webstorm, cursor, vscode, claude, xcode, antigravity, codex, all.
             Options:
               --keep, -k    Giữ lại thư mục .ai sau khi đồng bộ (Mặc định là xóa)
               --clean, -c   Xóa thư mục .ai_backups sau khi đồng bộ xong
+              --backup, -b  Sao lưu cấu hình hiện tại trước khi đồng bộ
 
   backup    Tạo bản sao lưu cho cấu hình AI hiện tại
   clean     Dọn dẹp các thư mục AI generated (.ai_backups, INITIAL_SESSION.md...)
@@ -174,16 +175,26 @@ async function clean() {
 
 async function updateGitignore() {
     const gitignorePath = path.join(process.cwd(), '.gitignore');
-    const entry = '.ai';
+    const entries = ['.ai', '.ai_backups'];
     try {
         if (await fs.pathExists(gitignorePath)) {
-            const content = await fs.readFile(gitignorePath, 'utf8');
-            if (!content.includes(entry)) {
-                await fs.appendFile(gitignorePath, `\n${entry}\n`);
-                console.log('📝 Đã bổ sung .ai vào .gitignore');
+            let content = await fs.readFile(gitignorePath, 'utf8');
+            let updated = false;
+            
+            for (const entry of entries) {
+                if (!content.includes(entry)) {
+                    content += `\n${entry}\n`;
+                    updated = true;
+                    console.log(`📝 Đã bổ sung ${entry} vào .gitignore`);
+                }
             }
-        } else {
-            await fs.writeFile(gitignorePath, `${entry}\n`);
+            
+            if (updated) {
+                await fs.writeFile(gitignorePath, content);
+            }
+        } else if (command === 'init') {
+            // Chỉ tạo .gitignore mới nếu đang chạy lệnh init
+            await fs.writeFile(gitignorePath, entries.join('\n') + '\n');
             console.log('📝 Đã tạo .gitignore');
         }
     } catch (err) {
