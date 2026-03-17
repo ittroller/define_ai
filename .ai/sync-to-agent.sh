@@ -9,7 +9,7 @@ get_target_dir() {
     case $1 in
         "cursor") echo ".cursor/rules" ;;
         "vscode") echo ".github/copilot-instructions.md" ;;
-        "jetbrains") echo ".idea/ai-agents" ;;
+        "jetbrains"|"pycharm"|"intellij"|"webstorm"|"phpstorm"|"rider"|"clion"|"datagrip"|"rubymine"|"goland"|"androidstudio") echo ".idea/ai-agents" ;;
         "claude") echo ".claude-instructions.md" ;;
         "antigravity") echo ".agent" ;;
         "xcode") echo ".xcoderules" ;;
@@ -39,19 +39,24 @@ detect_ide() {
 backup_ai_configs() {
     local ide=$1
     local target=$(get_target_dir "$ide")
-    mkdir -p "$BACKUP_DIR"
     
-    if [ -f "$target" ]; then
-        cp "$target" "$BACKUP_DIR/"
-        echo "   📦 Sao lưu: $target"
-    elif [ -d "$target" ]; then
-        cp -r "$target" "$BACKUP_DIR/"
-        echo "   📦 Sao lưu: $target"
-    fi
-    
-    if [ -f "INITIAL_SESSION.md" ]; then
-        cp "INITIAL_SESSION.md" "$BACKUP_DIR/"
-        echo "   📦 Sao lưu: ./INITIAL_SESSION.md"
+    # Chỉ sao lưu nếu có thư mục mục tiêu hoặc có INITIAL_SESSION.md cũ ở root
+    if ([ -e "$target" ] || [ -f "INITIAL_SESSION.md" ]); then
+        # Chỉ tạo BACKUP_DIR khi thực sự có gì đó để sao lưu
+        mkdir -p "$BACKUP_DIR"
+        
+        if [ -f "$target" ]; then
+            cp "$target" "$BACKUP_DIR/"
+            echo "   📦 Sao lưu: $target"
+        elif [ -d "$target" ]; then
+            cp -r "$target" "$BACKUP_DIR/"
+            echo "   📦 Sao lưu: $target"
+        fi
+        
+        if [ -f "INITIAL_SESSION.md" ]; then
+            cp "INITIAL_SESSION.md" "$BACKUP_DIR/"
+            echo "   📦 Sao lưu: ./INITIAL_SESSION.md"
+        fi
     fi
 }
 
@@ -71,6 +76,8 @@ sync_jetbrains() {
     
     # Combined instructions for JetBrains
     cat "$SOURCE_DIR/INITIAL_SESSION.md" > ".idea/ai-instructions.md"
+    # Thêm CLAUDE.md vào .idea để tăng khả năng nhận diện của AI Assistant
+    cat "$SOURCE_DIR/INITIAL_SESSION.md" > ".idea/CLAUDE.md"
 }
 
 # Function to sync for Cursor (Folder-based)
@@ -97,21 +104,44 @@ sync_file_based() {
 }
 
 # Main process
-IDE=$(detect_ide)
+# Ưu tiên nhận IDE từ tham số truyền vào
+REQUESTED_IDE=$1
+FORCE_BACKUP=false
+
+# Kiểm tra các tham số
+for arg in "$@"; do
+    if [ "$arg" == "--backup" ] || [ "$arg" == "-b" ]; then
+        FORCE_BACKUP=true
+    fi
+done
+
+if [ -n "$REQUESTED_IDE" ] && [[ "$REQUESTED_IDE" != -* ]]; then
+    IDE="$REQUESTED_IDE"
+    echo "📍 Sử dụng IDE được chỉ định: $IDE"
+else
+    IDE=$(detect_ide)
+fi
+
 if [ "$IDE" == "unknown" ]; then
     echo "❌ Không tìm thấy IDE được hỗ trợ (Cursor, VS Code, JetBrains, etc.)"
+    echo "👉 Bạn có thể chỉ định IDE: npx minhck-dot-ai sync jetbrains"
     exit 1
 fi
 
 echo "🔍 Tự động nhận diện IDE: $IDE"
-echo "🛡️ Đang kiểm tra và sao lưu các cấu hình AI hiện có cho IDE: $IDE..."
-backup_ai_configs "$IDE"
-echo "✅ Đã sao lưu các cấu hình cũ vào thư mục: $BACKUP_DIR"
-
 echo "🔄 Bắt đầu quá trình đồng bộ AI Agents cho: $IDE..."
 
+# Chỉ sao lưu khi có yêu cầu explicit bằng flag --backup
+if [ "$FORCE_BACKUP" = true ]; then
+    echo "🛡️ Đang sao lưu các cấu hình AI hiện có cho IDE: $IDE..."
+    backup_ai_configs "$IDE"
+    if [ -d "$BACKUP_DIR" ]; then
+        echo "✅ Đã sao lưu các cấu hình cũ vào thư mục: $BACKUP_DIR"
+    fi
+fi
+
 case $IDE in
-    "jetbrains")
+    "jetbrains"|"pycharm"|"intellij"|"webstorm"|"phpstorm"|"rider"|"clion"|"datagrip"|"rubymine"|"goland"|"androidstudio")
         sync_jetbrains
         ;;
     "cursor")
@@ -120,9 +150,13 @@ case $IDE in
     "vscode"|"claude"|"antigravity"|"xcode"|"codex")
         sync_file_based "$IDE"
         ;;
+    *)
+        echo "❌ IDE '$IDE' không được hỗ trợ chính thức."
+        exit 1
+        ;;
 esac
 
-# Always update INITIAL_SESSION.md in root
+# Chỉ update INITIAL_SESSION.md ở root khi đồng bộ thành công
 cp "$SOURCE_DIR/INITIAL_SESSION.md" "./INITIAL_SESSION.md"
 
 echo "✅ Đồng bộ thành công cho: $IDE!"
