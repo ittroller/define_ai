@@ -148,11 +148,15 @@ sync_combined_file() {
 # Ưu tiên nhận IDE từ tham số truyền vào
 REQUESTED_IDE=$1
 FORCE_BACKUP=false
+KEEP_AI=false
 
 # Kiểm tra các tham số
 for arg in "$@"; do
     if [ "$arg" == "--backup" ] || [ "$arg" == "-b" ]; then
         FORCE_BACKUP=true
+    fi
+    if [ "$arg" == "--keep" ] || [ "$arg" == "-k" ]; then
+        KEEP_AI=true
     fi
 done
 
@@ -227,4 +231,8 @@ echo "------------------------------------------------"
 echo "📍 Cấu hình IDE: $IDE"
 echo "📍 Khởi tạo:    ./INITIAL_SESSION.md"
 echo "------------------------------------------------"
-echo "🚀 Hoàn tất! (Lưu ý: Thư mục $SOURCE_DIR đã được giữ lại)"
+if [ "$KEEP_AI" = true ]; then
+    echo "🚀 Hoàn tất! (Lưu ý: Thư mục $SOURCE_DIR đã được giữ lại)"
+else
+    echo "🚀 Hoàn tất!"
+fi
