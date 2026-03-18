@@ -27,32 +27,42 @@ get_target_dir() {
 
 # Function to detect the IDE
 detect_ide() {
-    if [ -d ".cursor" ]; then
-        echo "cursor"
-    elif [ -d ".vscode" ]; then
+    # 1. Ưu tiên nhận diện qua biến môi trường (Nếu đang chạy trong terminal của IDE)
+    if [ "$TERM_PROGRAM" == "vscode" ]; then
         echo "vscode"
-    elif [ -d ".idea" ]; then
-        echo "jetbrains"
-    elif [ -d ".agent" ]; then
+        return
+    elif [ "$TERM_PROGRAM" == "cursor" ]; then
+        echo "cursor"
+        return
+    fi
+
+    # 2. Nhận diện qua các file đặc trưng (Markers) - Ưu tiên các Agent/IDE chuyên dụng trước
+    if [ -d ".cursor" ] || [ -f ".cursorrules" ]; then
+        echo "cursor"
+    elif [ -e ".agent" ]; then
         echo "antigravity"
-    elif [ -d ".claude" ]; then
+    elif [ -d ".cline" ] || [ -f ".clinerules" ]; then
+        echo "cline"
+    elif [ -d ".trae" ] || [ -f ".traerules" ]; then
+        echo "trae"
+    elif [ -d ".windsurf" ] || [ -f ".windsurfrules" ]; then
+        echo "windsurf"
+    elif [ -d ".claude" ] || [ -f ".claude-instructions.md" ]; then
         echo "claude"
-    elif [ -d ".codex" ]; then
-        echo "codex"
     elif [ -d ".continue" ]; then
         echo "continue"
+    elif [ -d ".codex" ]; then
+        echo "codex"
     elif [ -d ".zed" ]; then
         echo "zed"
     elif [ -d ".pearai" ]; then
         echo "pearai"
-    elif [ -d ".cline" ]; then
-        echo "cline"
-    elif [ -d ".trae" ]; then
-        echo "trae"
-    elif [ -d ".windsurf" ]; then
-        echo "windsurf"
-    elif [ -d ".aider" ]; then
+    elif [ -d ".aider" ] || [ -f ".aider.instructions.md" ]; then
         echo "aider"
+    elif [ -d ".vscode" ]; then
+        echo "vscode"
+    elif [ -d ".idea" ]; then
+        echo "jetbrains"
     else
         echo "unknown"
     fi
@@ -108,6 +118,13 @@ sync_folder_based() {
     local ide=$1
     local target=$(get_target_dir "$ide")
     echo "📂 Đồng bộ cho $ide ($target/)..."
+    
+    # Kiểm tra nếu target đang là tệp tin thì chuyển thành thư mục
+    if [ -f "$target" ]; then
+        echo "   ⚠️ Phát hiện $target là tệp tin, đang chuyển đổi thành thư mục..."
+        mv "$target" "${target}.bak"
+    fi
+    
     mkdir -p "$target"
     rsync -av --delete "$SOURCE_DIR/agents/" "$target/"
     # Optional: copy other things if needed
@@ -147,8 +164,9 @@ else
 fi
 
 if [ "$IDE" == "unknown" ]; then
-    echo "❌ Không tìm thấy IDE được hỗ trợ (Cursor, VS Code, JetBrains, etc.)"
-    echo "👉 Bạn có thể chỉ định IDE: npx minhck-dot-ai sync jetbrains"
+    echo "❌ Không tìm thấy IDE được hỗ trợ (Cursor, VS Code, JetBrains, Antigravity, etc.)"
+    echo "👉 Bạn có thể chỉ định IDE: npx minhck-dot-ai sync [tên-ide]"
+    echo "👉 Ví dụ: npx minhck-dot-ai sync cursor, npx minhck-dot-ai sync antigravity"
     exit 1
 fi
 
