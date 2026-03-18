@@ -47,7 +47,7 @@ Các lệnh:
   sync      [ide] [--keep] [--clean] [--backup]
             Đồng bộ cấu hình từ .ai sang các IDE.
             Script sẽ tự động nhận diện IDE qua terminal hoặc thư mục dự án.
-            Các IDE hỗ trợ: jetbrains, pycharm, intellij, webstorm, cursor, vscode, claude, xcode, antigravity, codex, all.
+            Các IDE hỗ trợ: jetbrains, pycharm, intellij, webstorm, cursor, vscode, claude, xcode, antigravity, codex, continue, zed, pearai, cline, trae, windsurf, aider, all.
             Options:
               --keep, -k    Giữ lại thư mục .ai sau khi đồng bộ (Mặc định là xóa)
               --clean, -c   Xóa thư mục .ai_backups sau khi đồng bộ xong
@@ -136,6 +136,7 @@ async function clean() {
         '.claude',
         '.claude-instructions.md',
         '.xcoderules',
+        '.xcode',
         '.ide',
         '.idea/ai-instructions.md',
         '.idea/ai-agents',
@@ -144,9 +145,13 @@ async function clean() {
         '.pearai',
         '.zed',
         '.aider.instructions.md',
+        '.aider',
         '.clinerules',
+        '.cline',
         '.traerules',
+        '.trae',
         '.windsurfrules',
+        '.windsurf',
         '.codex'
     ];
 

@@ -8,12 +8,19 @@ BACKUP_DIR=".ai_backups/backup_$(date +%Y%m%d_%H%M%S)"
 get_target_dir() {
     case $1 in
         "cursor") echo ".cursor/rules" ;;
-        "vscode") echo ".github/copilot-instructions.md" ;;
+        "vscode") echo ".vscode/ai-agents" ;;
         "jetbrains"|"pycharm"|"intellij"|"webstorm"|"phpstorm"|"rider"|"clion"|"datagrip"|"rubymine"|"goland"|"androidstudio") echo ".idea/ai-agents" ;;
-        "claude") echo ".claude-instructions.md" ;;
+        "claude") echo ".claude" ;;
         "antigravity") echo ".agent" ;;
-        "xcode") echo ".xcoderules" ;;
+        "xcode") echo ".xcode/rules" ;;
         "codex") echo ".codex" ;;
+        "continue") echo ".continue/rules" ;;
+        "zed") echo ".zed/rules" ;;
+        "pearai") echo ".pearai/rules" ;;
+        "cline") echo ".cline/rules" ;;
+        "trae") echo ".trae/rules" ;;
+        "windsurf") echo ".windsurf/rules" ;;
+        "aider") echo ".aider/rules" ;;
         *) echo "" ;;
     esac
 }
@@ -28,8 +35,24 @@ detect_ide() {
         echo "jetbrains"
     elif [ -d ".agent" ]; then
         echo "antigravity"
+    elif [ -d ".claude" ]; then
+        echo "claude"
     elif [ -d ".codex" ]; then
         echo "codex"
+    elif [ -d ".continue" ]; then
+        echo "continue"
+    elif [ -d ".zed" ]; then
+        echo "zed"
+    elif [ -d ".pearai" ]; then
+        echo "pearai"
+    elif [ -d ".cline" ]; then
+        echo "cline"
+    elif [ -d ".trae" ]; then
+        echo "trae"
+    elif [ -d ".windsurf" ]; then
+        echo "windsurf"
+    elif [ -d ".aider" ]; then
+        echo "aider"
     else
         echo "unknown"
     fi
@@ -80,22 +103,23 @@ sync_jetbrains() {
     cat "$SOURCE_DIR/INITIAL_SESSION.md" > ".idea/CLAUDE.md"
 }
 
-# Function to sync for Cursor (Folder-based)
-sync_cursor() {
-    echo "📂 Đồng bộ cho Cursor (.cursor/rules/)..."
-    mkdir -p ".cursor/rules"
-    rsync -av --delete "$SOURCE_DIR/agents/" ".cursor/rules/"
-    # Cursor can also read these directly if added to rules
-    cp "$SOURCE_DIR/INITIAL_SESSION.md" ".cursor/rules/INITIAL_SESSION.md"
-}
-
-# Function to sync for VS Code / Claude / Xcode (File-based)
-sync_file_based() {
+# Function to sync for folder-based IDEs
+sync_folder_based() {
     local ide=$1
     local target=$(get_target_dir "$ide")
-    echo "📂 Đồng bộ cho $ide ($target)..."
-    
-    # Combine all important instructions into a single file
+    echo "📂 Đồng bộ cho $ide ($target/)..."
+    mkdir -p "$target"
+    rsync -av --delete "$SOURCE_DIR/agents/" "$target/"
+    # Optional: copy other things if needed
+    cp "$SOURCE_DIR/INITIAL_SESSION.md" "$target/INITIAL_SESSION.md"
+}
+
+# Function to generate a combined instruction file
+sync_combined_file() {
+    local target=$1
+    local dir=$(dirname "$target")
+    echo "📝 Tạo file nén tổng hợp: $target"
+    mkdir -p "$dir"
     cat "$SOURCE_DIR/INITIAL_SESSION.md" > "$target"
     echo -e "\n\n# --- AGENT RULES ---\n" >> "$target"
     cat "$SOURCE_DIR/agents/"*.md >> "$target"
@@ -144,11 +168,32 @@ case $IDE in
     "jetbrains"|"pycharm"|"intellij"|"webstorm"|"phpstorm"|"rider"|"clion"|"datagrip"|"rubymine"|"goland"|"androidstudio")
         sync_jetbrains
         ;;
-    "cursor")
-        sync_cursor
+    "vscode")
+        sync_folder_based "vscode"
+        sync_combined_file ".github/copilot-instructions.md"
         ;;
-    "vscode"|"claude"|"antigravity"|"xcode"|"codex")
-        sync_file_based "$IDE"
+    "cline")
+        sync_folder_based "cline"
+        sync_combined_file ".clinerules"
+        ;;
+    "trae")
+        sync_folder_based "trae"
+        sync_combined_file ".traerules"
+        ;;
+    "windsurf")
+        sync_folder_based "windsurf"
+        sync_combined_file ".windsurfrules"
+        ;;
+    "aider")
+        sync_folder_based "aider"
+        sync_combined_file ".aider.instructions.md"
+        ;;
+    "xcode")
+        sync_folder_based "xcode"
+        sync_combined_file ".xcoderules"
+        ;;
+    "cursor"|"antigravity"|"codex"|"claude"|"continue"|"zed"|"pearai")
+        sync_folder_based "$IDE"
         ;;
     *)
         echo "❌ IDE '$IDE' không được hỗ trợ chính thức."
