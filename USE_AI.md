@@ -72,10 +72,12 @@ Dự án này sử dụng cấu hình AI "di động" trong thư mục `.ai`. Đ
     -   **Antigravity**: `.agent/`
     -   **Codex**: `.codex/`
     -   **Cursor**: `.cursor/rules/`
-    -   **VS Code / Copilot**: `.github/copilot-instructions.md` (Tổng hợp)
-    -   **Claude IDE / Desktop**: `.claude-instructions.md` (Tổng hợp)
+    -   **Claude IDE / Desktop**: `.claude/`
+    -   **VS Code / Copilot**: `.vscode/ai-agents/` và `.github/copilot-instructions.md` (Tổng hợp)
     -   **WebStorm / JetBrains**: `.idea/ai-agents/` và `.idea/ai-instructions.md` (Tổng hợp)
-    -   **Xcode**: `.xcoderules` (Tổng hợp)
+    -   **Xcode**: `.xcode/rules/` và `.xcoderules` (Tổng hợp)
+    -   **Continue / Zed / PearAI**: Thư mục rules tương ứng (`.continue/rules/`, ...)
+    -   **Cline / Trae / Windsurf / Aider**: Thư mục rules và file cấu hình riêng (`.clinerules`, ...)
 5.  **Khởi tạo**: Sau khi đồng bộ, file `INITIAL_SESSION.md` sẽ xuất hiện ở thư mục gốc. Hãy mở nó để bắt đầu phiên chat với AI.
 6.  **Ví dụ cụ thể**: Xem thêm các ví dụ thực tế sử dụng Superpowers tại `.ai/prompts/usage-examples.md`.
 
