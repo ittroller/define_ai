@@ -99,11 +99,23 @@ async function sync() {
 
     // Lấy tất cả tham số truyền vào từ command sync: npx minhck-dot-ai sync [args...]
     const syncArgs = process.argv.slice(3);
+    const keepFolder = syncArgs.includes('--keep') || syncArgs.includes('-k');
+    const cleanBackups = syncArgs.includes('--clean') || syncArgs.includes('-c');
     
     try {
         console.log(`🔄 Đang bắt đầu đồng bộ...`);
         // Truyền các tham số trực tiếp cho bash script xử lý
         execSync(`bash "${syncScript}" ${syncArgs.join(' ')}`, { stdio: 'inherit' });
+
+        if (!keepFolder) {
+            await fs.remove(path.join(process.cwd(), '.ai'));
+            console.log('🧹 Đã tự động dọn dẹp thư mục .ai (Dùng --keep để giữ lại)');
+        }
+
+        if (cleanBackups) {
+            await fs.remove(path.join(process.cwd(), '.ai_backups'));
+            console.log('🧹 Đã dọn dẹp thư mục .ai_backups.');
+        }
     } catch (err) {
         // Lỗi thường đã được in ra bởi stdio: inherit, ở đây chỉ catch để không crash
     }
